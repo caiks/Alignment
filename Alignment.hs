@@ -60,6 +60,8 @@ module Alignment (
   historiesIdsState,
   varsHistoriesReduce, setVarsHistoriesReduce,
   pairHistoriesJoin,
+  pairHistoriesAdd,
+  pairHistoriesMultiply,
   histogramFromList, listsHistogram, listsHistogram_u,
   histogramToList, histogramsList,
   histogramsStates, histogramsSetState,
@@ -364,7 +366,7 @@ newtype System = System (Map.Map Variable (Set.Set Value))
 newtype State = State (Map.Map Variable Value)
                deriving (Eq, Ord, Read, Show)
 
-data Id = IdStr String | IdInt Integer | IdStateInteger (State, Integer) | IdListId [Id] | IdIntId (Integer,Id)
+data Id = IdStr String | IdInt Integer | IdStateInteger (State, Integer) | IdListId [Id] | IdIntId (Integer,Id) | IdPair (Id,Id) | IdNull
                deriving (Eq, Ord, Read, Show)
 
 newtype History = History (Map.Map Id State) 
@@ -632,6 +634,8 @@ instance Represent Id where
   represent (IdStateInteger (ss, i)) = represent (ss, i)
   represent (IdListId ll) = represent ll
   represent (IdIntId (i,x)) = represent (i,x)
+  represent (IdPair (i, j)) = represent (i, j)
+  represent (IdNull) = "_"
 
 instance Represent History where
   represent (History mm) = represent mm
@@ -696,6 +700,28 @@ pairHistoriesJoin hh gg =
     lis = historiesList
     isJoin = pairStatesIsJoin
     sunion = pairStatesUnionLeft
+
+pairHistoriesAdd :: History -> History -> Maybe History
+pairHistoriesAdd hh gg
+  | hh == empty = Just gg
+  | gg == empty = Just hh
+  | vars hh == vars gg = Just ff
+  | otherwise = Nothing
+  where
+    ff = llhh $ [(IdPair (x,IdNull), ss) | (x,ss) <- hhll hh] ++ [(IdPair (IdNull,x), ss) | (x,ss) <- hhll gg]
+    llhh = fromJust . listsHistory  
+    hhll = historyToList
+    empty = historyEmpty
+    vars = historiesSetVar
+
+pairHistoriesMultiply :: History -> History -> History
+pairHistoriesMultiply hh gg = ff
+  where
+    ff = llhh $ [(IdPair (x,y), ss `sjoin` tt) | (x,ss) <- hhll hh, (y,tt) <- hhll gg, ss `isjoin` tt]
+    llhh = fromJust . listsHistory  
+    hhll = historyToList
+    sjoin = pairStatesUnionLeft
+    isjoin = pairStatesIsJoin
 
 instance Represent Histogram where
   represent (Histogram mm) = represent mm
