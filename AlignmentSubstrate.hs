@@ -4,6 +4,7 @@ module AlignmentSubstrate (
   systemsSetVarsTransformFullValue,
   systemsSetVarsFudBase,
   systemsSetVarsFudBaseCardinality,
+  systemsSetVarsSizesHistogramSubstrate,
   systemsSetVarsSetTransformSubstrate, 
   systemsSetVarsSetTransformSubstrate_1, 
   systemsSetVarsSetTransformSubstrate_2,
@@ -282,6 +283,7 @@ import qualified Data.Set as Set
 import qualified Data.Map as Map
 import AlignmentUtil
 import Alignment
+import AlignmentDistribution(systemsDrawCartesiansSupport)
 import GHC.Real
 
 systemsSetVarsTransformUnary :: System -> Set.Set Variable -> Maybe Transform
@@ -341,6 +343,9 @@ systemsSetVarsFudBaseCardinality uu vv
     vol uu vv = fromJust $ systemsVarsVolume uu vv
     uvars = systemsVars
     subset = Set.isSubsetOf          
+
+systemsSetVarsSizesHistogramSubstrate :: System -> Set.Set Variable -> Integer -> Maybe (Set.Set Histogram)
+systemsSetVarsSizesHistogramSubstrate = systemsDrawCartesiansSupport
 
 systemsSetVarsSetTransformSubstrate :: System -> Set.Set Variable -> Maybe (Set.Set Transform)
 systemsSetVarsSetTransformSubstrate uu vv
