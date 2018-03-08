@@ -50,7 +50,8 @@ module Alignment (
   pairStatesUnionRight,
   pairStatesIsJoin,
   statesCardinality,
-  historyFromList, listsHistory,
+  historyFromList, historyFromList_u,
+  listsHistory,
   historyToList, historiesList,
   historyEmpty,
   historiesSize,
@@ -647,6 +648,10 @@ historyFromList ll
   where 
     mm = Map.fromList ll
     ok = length ll == 0 || length (nub [statesVars ss | (i, ss) <- ll]) == 1
+
+-- AYOR
+historyFromList_u :: [(Id, State)] -> History
+historyFromList_u = History . Map.fromList
 
 listsHistory = historyFromList
 

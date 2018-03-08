@@ -4,6 +4,7 @@ module AlignmentSubstrate (
   systemsSetVarsTransformFullValue,
   systemsSetVarsFudBase,
   systemsSetVarsFudBaseCardinality,
+  systemsSetVarsSizesHistorySubstrate,
   systemsSetVarsSizesHistogramSubstrate,
   systemsSetVarsSetTransformSubstrate, 
   systemsSetVarsSetTransformSubstrate_1, 
@@ -343,6 +344,19 @@ systemsSetVarsFudBaseCardinality uu vv
     vol uu vv = fromJust $ systemsVarsVolume uu vv
     uvars = systemsVars
     subset = Set.isSubsetOf          
+
+systemsSetVarsSizesHistorySubstrate :: System -> Set.Set Variable -> Integer -> Maybe (Set.Set History)
+systemsSetVarsSizesHistorySubstrate uu vv z 
+  | (vv `Set.isSubsetOf` (uvars uu)) && z > 0 = Just $ hisinc empty z
+  | otherwise = Nothing 
+  where
+    hisinc hh 0 = Set.singleton hh
+    hisinc hh z = setSetsUnion $ Set.map (\ss -> hisinc (llhh (hhll hh ++ [(IdInt z, ss)])) (z-1)) (vvqq uu vv)
+    vvqq uu vv = fromJust $ systemsSetVarsSetStateCartesian uu vv
+    llhh = historyFromList_u
+    hhll = historyToList
+    empty = historyEmpty
+    uvars = systemsVars
 
 systemsSetVarsSizesHistogramSubstrate :: System -> Set.Set Variable -> Integer -> Maybe (Set.Set Histogram)
 systemsSetVarsSizesHistogramSubstrate = systemsDrawCartesiansSupport
