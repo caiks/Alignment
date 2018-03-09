@@ -10,6 +10,7 @@ module AlignmentApprox (
   drawMultinomialsProbability, drawMultinomialsProbabilityLog,
   drawIndependentBinomialsProbability, drawIndependentBinomialsProbabilityLog,
   histogramsEntropy,
+  histogramsMultinomialLog,
   histogramsAlignment,
   histogramsAlignmentTerms,
   systemsSetVarsSizesAlignmentMaximum,
@@ -157,6 +158,15 @@ logGamma x
     r4_2 = 0.0692910599291889; r4_3 = 3.350343815022304
     r4_4 = 6.012459259764103
 
+histogramsMultinomialLog :: Histogram -> Double
+histogramsMultinomialLog aa =  
+    facln zaa - sum [facln c | c <- counts aa]
+  where
+    zaa = size aa
+    size = fromRational . histogramsSize
+    counts = map (\(ss,c) -> fromRational c) . histogramsList
+    facln x = logGamma (x + 1)
+
 drawBinomialsProbabilityLog :: Double -> Double -> Double -> Double
 drawBinomialsProbabilityLog p z k =  
     facln z - facln k - facln (z - k) + k * log p + (z - k) * log (1 - p)
@@ -182,13 +192,7 @@ drawHistoricalsProbability :: Histogram -> Histogram -> Double
 drawHistoricalsProbability ee aa = exp $ drawHistoricalsProbabilityLog ee aa
 
 drawMultinomialsMultLog :: Histogram -> Histogram -> Double
-drawMultinomialsMultLog ee aa =  
-    facln zaa - sum [facln c | c <- counts aa]
-  where
-    zaa = size aa
-    size = fromRational . histogramsSize
-    counts = map (\(ss,c) -> fromRational c) . histogramsList
-    facln x = logGamma (x + 1)
+drawMultinomialsMultLog _  =  histogramsMultinomialLog
  
 drawMultinomialsPermutorialLog :: Histogram -> Histogram -> Double
 drawMultinomialsPermutorialLog ee aa =  
