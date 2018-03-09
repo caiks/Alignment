@@ -5,6 +5,7 @@ module AlignmentSubstrate (
   systemsSetVarsFudBase,
   systemsSetVarsFudBaseCardinality,
   systemsSetVarsSizesHistorySubstrate,
+  systemsSetVarsSizesHistorySubstrate_1,
   systemsSetVarsSizesHistogramSubstrate,
   systemsSetVarsSetTransformSubstrate, 
   systemsSetVarsSetTransformSubstrate_1, 
@@ -347,6 +348,18 @@ systemsSetVarsFudBaseCardinality uu vv
 
 systemsSetVarsSizesHistorySubstrate :: System -> Set.Set Variable -> Integer -> Maybe (Set.Set History)
 systemsSetVarsSizesHistorySubstrate uu vv z 
+  | (vv `Set.isSubsetOf` (uvars uu)) && z > 0 = 
+      Just $ Set.fromList $ map llhh $ foldl inc [[]] [1..z]
+  | otherwise = Nothing 
+  where
+    qq = Set.toList (vvqq uu vv)
+    inc ll i = [(IdInt i, ss) : mm | mm <- ll, ss <- qq]
+    vvqq uu vv = fromJust $ systemsSetVarsSetStateCartesian uu vv
+    llhh = historyFromList_u
+    uvars = systemsVars
+
+systemsSetVarsSizesHistorySubstrate_1 :: System -> Set.Set Variable -> Integer -> Maybe (Set.Set History)
+systemsSetVarsSizesHistorySubstrate_1 uu vv z 
   | (vv `Set.isSubsetOf` (uvars uu)) && z > 0 = Just $ hisinc empty z
   | otherwise = Nothing 
   where
