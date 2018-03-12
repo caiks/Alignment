@@ -180,7 +180,7 @@ dfund = decompFudsUnderlying
 dfapply aa df = decompFudsHistogramsApply df aa
 dfmul aa df = decompFudsHistogramsMultiply df aa
 
-
+ent = histogramsEntropy 
 algn = histogramsAlignment
 algnden aa = let v = fromIntegral (vol (sys aa) (vars aa)); n = fromIntegral (dim aa) in algn aa  / (v ** (1/n))
 

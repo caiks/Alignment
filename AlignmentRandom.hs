@@ -4,7 +4,8 @@ module AlignmentRandom (
   histogramsRandomsUniform,
   histogramsRandomsUniform_1,
   histogramsRandomsMultinomial,
-  histogramsRandomsMultinomial_1
+  histogramsRandomsMultinomial_1,
+  systemsSetVarsSizesHistoryRandom
 )
 where
 import Data.List
@@ -91,4 +92,17 @@ histogramsRandomsMultinomial_1 aa z s
     resize z aa = fromJust $ histogramsResize z aa
     size = histogramsSize
     his ll = fromJust $ listsHistogram ll
+
+systemsSetVarsSizesHistoryRandom :: System -> Set.Set Variable -> Integer -> Int -> Maybe History
+systemsSetVarsSizesHistoryRandom uu vv z s
+  | (vv `Set.isSubsetOf` (uvars uu)) && z > 0 = 
+      Just $ llhh $ [(IdInt i, qq !! j) | (i,j) <- zip [1..z] rr]
+  | otherwise = Nothing 
+  where
+    qq = Set.toList (vvqq uu vv)
+    l = length qq
+    rr = drop 1 $ randomRs (0,l-1) (mkStdGen s) :: [Int]
+    vvqq uu vv = fromJust $ systemsSetVarsSetStateCartesian uu vv
+    llhh = historyFromList_u
+    uvars = systemsVars
 
