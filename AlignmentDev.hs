@@ -31,6 +31,7 @@ uull = systemsList
 umap uu ll = Map.fromList [(v,(v',Map.fromList (zip (Set.toList ww) (map ValInt [1..])))) | ((v,ww),v') <- zip (uull uu) ll]
 
 ph x = represent x
+aat aa ss = fromJust $ histogramsStatesCount aa ss
 aall = histogramsList
 llaa ll = fromJust $ listsHistogram ll
 aarr aa = map (\(ss,c) -> (ss,fromRational c)) (histogramsList aa) :: [(State,Double)]
