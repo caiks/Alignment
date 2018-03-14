@@ -89,6 +89,10 @@ rreg d n i = let qq = [regsing d n, regcart d n, regdiag d n, regcrown d n, regp
 rregz d n i z = [resize z aa | aa <- rreg d n i, z >= 0, size aa > 0]
 perturb aa e = [aa `add` single ss e `sub` single tt e | (ss,c) <- aall (trim aa), (tt,d) <- aall (trim aa), tt /= ss, d >= e]
 
+llhh = fromJust . listsHistory  
+hhll = historyToList
+hvars = historiesSetVar
+hsize = historiesSize
 aahh aa = fromJust $ histogramsHistory aa
 hhaa hh = historiesHistogram hh
 hshuffle hh r = fromJust $ historiesShuffle hh r
