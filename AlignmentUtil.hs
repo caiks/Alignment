@@ -67,8 +67,11 @@ module AlignmentUtil (
   functionsRange,
   functionsIsBijective,
   functionsInverse,
+  functionsIsProbability,
   relationsMaximum,
   relationsMinimum,
+  relationsSum,
+  relationsNormalise,
   fromJust,
   fromMaybe,
   fromJustNum,
@@ -84,7 +87,8 @@ module AlignmentUtil (
   stirlingSecond, stirlingSecond_1,
   bell,
   bellcd, bellcd_1,
-  stircd
+  stircd,
+  entropy
 )
 where
 import Data.List
@@ -490,6 +494,12 @@ functionsInverse mm = llmm [(y, sing x) | (x,y) <- mmll mm]
     sing = Set.singleton
     llmm = Map.fromListWith Set.union
 
+functionsIsProbability :: Ord a => Map.Map a Rational -> Bool
+functionsIsProbability mm = 
+  mm /= Map.empty && maximum ee <= 1 && minimum ee >= 0 && sum ee == 1
+  where 
+    ee = Map.elems mm
+
 relationsMaximum :: (Ord a, Ord b) => Set.Set (a,b) -> Set.Set (a,b)
 relationsMaximum ss 
   | ss == Set.empty =  Set.empty
@@ -503,6 +513,14 @@ relationsMinimum ss
   | otherwise = Set.filter (\(x,y) -> y==m) ss
   where
     m = Set.findMin (relationsRange ss)
+
+relationsSum :: (Ord a, Ord b, Num b) => Set.Set (a,b) -> b
+relationsSum qq = sum [y | (_,y) <- Set.toList qq] 
+
+relationsNormalise :: (Ord a, Ord b, Fractional b) => Set.Set (a,b) -> Set.Set (a,b)
+relationsNormalise qq = Set.map (\(x,y) -> (x,y/s)) qq
+  where
+    s = relationsSum qq
 
 class Represent a where
   represent :: Show a => a -> String
@@ -658,3 +676,10 @@ bellcd_1 n
 
 stircd :: Integer -> Integer -> Map.Map [Integer] Integer 
 stircd n k = Map.filterWithKey (\kk _ -> sum kk == k) (bellcd n)
+
+entropy :: [Rational] -> Double
+entropy [] = 0
+entropy ll = - sum [r' * log r' | r <- ll, let r' = fromRational (r/s)]
+  where
+    s = sum ll
+
