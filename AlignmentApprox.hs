@@ -10,6 +10,7 @@ module AlignmentApprox (
   drawMultinomialsProbability, drawMultinomialsProbabilityLog,
   drawIndependentBinomialsProbability, drawIndependentBinomialsProbabilityLog,
   histogramsEntropy,
+  setVarsHistogramsSliceEntropy,
   histogramsMultinomialLog,
   histogramsAlignment,
   histogramsAlignmentTerms,
@@ -244,6 +245,20 @@ histogramsEntropy aa =
     div = pairHistogramsDivide
     size = fromRational . histogramsSize
     aall = map (\(ss,c) -> (ss,fromRational c)) . histogramsList . histogramsTrim
+
+setVarsHistogramsSliceEntropy :: Set.Set Variable -> Histogram -> Double
+setVarsHistogramsSliceEntropy kk aa = 
+    sum [zc * entropy cc | rr <- states (aa `red` kk), 
+          let cc = aa `mul` single rr `red` vk, let zc = fromRational (size cc), zc > 0]
+  where
+    vk = vars aa `Set.difference` kk
+    single ss = fromJust $ histogramSingleton ss 1
+    red aa vv = setVarsHistogramsReduce vv aa
+    states =  Set.toList . histogramsSetState
+    mul = pairHistogramsMultiply
+    size = histogramsSize
+    entropy = histogramsEntropy
+    vars = histogramsVars
 
 histogramsAlignment :: Histogram -> Double
 histogramsAlignment aa =
