@@ -159,6 +159,7 @@ module Alignment (
   transformsMapVarsFrame,
   transformsMapVarMapValsFrame,
   transformsHistogramsApply,
+  transformsHistoriesApply,
   transformsIsFunc,
   transformsIsBijective,
   transformsInverse,
@@ -1452,6 +1453,18 @@ transformsHistogramsApply tt aa =
     Transform (xx,ww) = tt
     mul = pairHistogramsMultiply
     red = flip setVarsHistogramsReduce
+
+transformsHistoriesApply :: Transform -> History -> History
+transformsHistoriesApply tt hh =
+    llhh $ [(i, rr) | (i,ss) <- hhll hh, 
+                      let rr' = states (eff (sunit ss `tmul` tt)), rr' /= Set.empty, let rr = Set.findMax rr']
+  where
+    llhh = fromJust .listsHistory
+    hhll = historiesList
+    sunit ss = fromJust $ histogramSingleton ss 1
+    states = histogramsStates
+    eff = histogramsEffective
+    tmul aa tt = transformsHistogramsApply tt aa
 
 transformsIsFunc :: Transform -> Bool
 transformsIsFunc tt = 
