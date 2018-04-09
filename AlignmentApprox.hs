@@ -13,6 +13,7 @@ module AlignmentApprox (
   histogramsHistogramsEntropyCross,
   setVarsHistogramsSliceEntropy,
   transformsHistogramsEntropyComponent,
+  setVarsTransformsHistogramsEntropyLabel,
   histogramsMultinomialLog,
   histogramsAlignment,
   histogramsAlignmentTerms,
@@ -289,6 +290,25 @@ transformsHistogramsEntropyComponent tt aa =
     entropy = histogramsEntropy
     inv = Map.toList . transformsInverse
     tmul aa tt = transformsHistogramsApply tt aa
+
+setVarsTransformsHistogramsEntropyLabel :: Set.Set Variable -> Transform -> Histogram -> Double
+setVarsTransformsHistogramsEntropyLabel kk tt aa =
+    sum [size (aa' `mul` sunit rr) * entropy (aa `mul` cc `red` vk) | (rr,cc) <- inv tt]
+  where
+    aa' = aa `tmul` tt
+    vk = vars aa `Set.difference` kk
+    red aa vv = setVarsHistogramsReduce vv aa
+    prob aa = aa `div` scalar (histogramsSize aa)
+    scalar = fromJust . histogramScalar
+    div = pairHistogramsDivide
+    size = fromRational . histogramsSize
+    aall = map (\(ss,c) -> (ss,fromRational c)) . histogramsList . histogramsTrim
+    mul = pairHistogramsMultiply
+    sunit ss = fromJust $ histogramSingleton ss 1
+    entropy = histogramsEntropy
+    inv = Map.toList . transformsInverse
+    tmul aa tt = transformsHistogramsApply tt aa
+    vars = histogramsVars
 
 histogramsAlignment :: Histogram -> Double
 histogramsAlignment aa =
