@@ -1457,7 +1457,7 @@ transformsHistogramsApply tt aa =
 transformsHistoriesApply :: Transform -> History -> History
 transformsHistoriesApply tt hh =
     llhh $ [(i, rr) | (i,ss) <- hhll hh, 
-                      let rr' = states (eff (sunit ss `tmul` tt)), rr' /= Set.empty, let rr = Set.findMax rr']
+                      let rr' = states (eff (sunit ss `tmul` tt)), Set.size rr' == 1, let rr = Set.findMax rr']
   where
     llhh = fromJust .listsHistory
     hhll = historiesList
