@@ -10,7 +10,9 @@ module AlignmentApprox (
   drawMultinomialsProbability, drawMultinomialsProbabilityLog,
   drawIndependentBinomialsProbability, drawIndependentBinomialsProbabilityLog,
   histogramsEntropy,
+  histogramsHistogramsEntropyCross,
   setVarsHistogramsSliceEntropy,
+  transformsHistogramsEntropyComponent,
   histogramsMultinomialLog,
   histogramsAlignment,
   histogramsAlignmentTerms,
@@ -246,6 +248,18 @@ histogramsEntropy aa =
     size = fromRational . histogramsSize
     aall = map (\(ss,c) -> (ss,fromRational c)) . histogramsList . histogramsTrim
 
+histogramsHistogramsEntropyCross :: Histogram -> Histogram -> Double
+histogramsHistogramsEntropyCross aa bb =
+    - sum [size (prob aa `mul` sunit ss) * log b | (ss,b) <- aall (prob bb)]
+  where
+    prob aa = aa `div` scalar (histogramsSize aa)
+    scalar = fromJust . histogramScalar
+    div = pairHistogramsDivide
+    size = fromRational . histogramsSize
+    aall = map (\(ss,c) -> (ss,fromRational c)) . histogramsList . histogramsTrim
+    mul = pairHistogramsMultiply
+    sunit ss = fromJust $ histogramSingleton ss 1
+
 setVarsHistogramsSliceEntropy :: Set.Set Variable -> Histogram -> Double
 setVarsHistogramsSliceEntropy kk aa = 
     sum [zc * entropy cc | rr <- states (aa `red` kk), 
@@ -259,6 +273,22 @@ setVarsHistogramsSliceEntropy kk aa =
     size = histogramsSize
     entropy = histogramsEntropy
     vars = histogramsVars
+
+transformsHistogramsEntropyComponent :: Transform -> Histogram -> Double
+transformsHistogramsEntropyComponent tt aa =
+    sum [size (aa' `mul` sunit rr) * entropy (aa `mul` cc) | (rr,cc) <- inv tt]
+  where
+    aa' = prob aa `tmul` tt
+    prob aa = aa `div` scalar (histogramsSize aa)
+    scalar = fromJust . histogramScalar
+    div = pairHistogramsDivide
+    size = fromRational . histogramsSize
+    aall = map (\(ss,c) -> (ss,fromRational c)) . histogramsList . histogramsTrim
+    mul = pairHistogramsMultiply
+    sunit ss = fromJust $ histogramSingleton ss 1
+    entropy = histogramsEntropy
+    inv = Map.toList . transformsInverse
+    tmul aa tt = transformsHistogramsApply tt aa
 
 histogramsAlignment :: Histogram -> Double
 histogramsAlignment aa =
