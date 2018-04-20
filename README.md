@@ -1,6 +1,6 @@
 # Alignment
 
-The Alignment repository is a literal Haskell implementation of some of the set-theoretic functions and structures described in the paper *The Theory and Practice of Induction by Alignment* at http://greenlake.co.uk/.
+The Alignment repository is a literal Haskell implementation of some of the set-theoretic functions and structures described in the paper *The Theory and Practice of Induction by Alignment* at http://greenlake.co.uk/. 
 
 ## Installation
 
@@ -99,3 +99,7 @@ algn aa
 algn dd
 98.71169723276279
 ```
+
+## Documentation
+
+Some of the sections of the Overview of the paper have been illustrated with a [Haskell commentary](http://greenlake.co.uk/pages/overview_haskell). The comments provide both (a) code examples for the paper and (b) documentation for the code. 
