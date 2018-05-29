@@ -28,7 +28,7 @@ uunion = pairSystemsUnion
 uvars = systemsVars
 vol uu vv = fromJust $ systemsVarsVolume uu vv
 uull = systemsList
-umap uu ll = Map.fromList [(v,(v',Map.fromList (zip (Set.toList ww) (map ValInt [1..])))) | ((v,ww),v') <- zip (uull uu) ll]
+umap uu ll = Map.fromList [(v,(v',Map.fromList (zip (Set.toList ww) (map ValInt [1..])))) | ((v,ww),v') <- zip [(v,ww) | (v,ww) <- uull uu, variablesIsPartition v] ll]
 
 ph x = represent x
 aat aa ss = fromJust $ histogramsStatesCount aa ss
@@ -166,7 +166,7 @@ ffaa  = ttaa . fftt
 layer ff = fudsSetVarsLayer ff (fder ff)
 fsys = fudsSystemImplied
 fmp ff ll = qqff (Set.map (\tt -> fromJust (transformsMapVarMapValsFrame tt (umap (fsys ff) ll))) (ffqq ff))
-fmpi ff = fmp ff [VarInt i | i <- [1..]]
+fmpi ff = fmp ff [VarInt i | i <- [1..], VarInt i `Set.notMember` fvars ff]
 
 fregb d n b m = map qqff $ foldl (\qq pp -> [Set.insert tt ff | ff <- qq, tt <- pp]) [Set.empty] [map (\tt -> tframell tt [(n+1,n+k)]) (treg2b d n b) | k <- [1 .. m]]
 fregbno d n b m = map qqff $ foldl (\qq pp -> [Set.insert tt ff | ff <- qq, tt <- pp]) [Set.empty] [map (\tt -> tframell tt ([(i,n*(k-1)+i) | i <- [1..n]] ++ [(n+1,n*m+k)])) (treg2b d n b) | k <- [1 .. m]]
