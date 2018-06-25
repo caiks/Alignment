@@ -53,6 +53,7 @@ dim = histogramsDimension
 card = histogramsCardinality
 recip = histogramsReciprocal
 red aa vv = setVarsHistogramsReduce vv aa
+ared aa vv = setVarsHistogramsReduce vv aa
 cdred aa ll = red aa $ Set.fromList $ map VarInt ll
 scalar q = fromJust $ histogramScalar q
 single ss c = fromJust $ histogramSingleton ss c
