@@ -454,7 +454,7 @@ parametersSystemsSamplesShufflesListVariablesSearcherFudHighestIO
         printf "tuples: %d\n" $ length bb'
         printf "minimum searched lower: %d\n" $ s1
         printf "expected searched lower: %.2f\n" $ s2
-        printf "maximum searched lower: %d\n" $ s3	
+        printf "maximum searched lower: %d\n" $ s3
         printf "expected searched upper: %.2f\n" $ s4
         printf "maximum searched upper: %d\n" $ s5
         t3 <- getCurrentTime

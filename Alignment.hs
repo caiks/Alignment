@@ -968,15 +968,15 @@ histogramRegularUnitSingleton d n
     | d >= 1 && n >= 1 = Just bb
     | otherwise = Nothing
   where
-    bb = Histogram $ Map.fromList $ [(State (Map.fromList [(VarInt j, ValInt 1) | j <-[1..n]]), 1)]    
-		
+    bb = Histogram $ Map.fromList $ [(State (Map.fromList [(VarInt j, ValInt 1) | j <-[1..n]]), 1)]  
+
 histogramRegularUnitSingleton_2 :: Integer -> Integer -> Maybe Histogram
 histogramRegularUnitSingleton_2 d n = histogramRegularCartesian 1 n
     
 histogramsIsCausal :: Histogram -> Bool
 histogramsIsCausal aa = 
     dim aa >= 2 && 
-	  or [isfunc (split kk (states aa)) | kk <- Set.toList (power (vars aa)), kk /= vars aa]
+      or [isfunc (split kk (states aa)) | kk <- Set.toList (power (vars aa)), kk /= vars aa]
   where
     isfunc = relationsIsFunc
     split = setVarsSetStatesSplit
@@ -999,12 +999,12 @@ histogramRegularUnitPlanar d n
     | d >= 1 && n > 1 = Just $ regsing d 1 `mul` frame (+ 1) (regcart d (n-1)) 
     | otherwise = Nothing
   where
-	regcart d n = fromJust $ histogramRegularCartesian d n
-	regsing d n = fromJust $ histogramRegularUnitSingleton d n
-	mul = pairHistogramsMultiply
-	frame f aa = fromJust $ histogramsMapVarsFrame aa (Map.fromList $ map (\(VarInt i) -> (VarInt i, VarInt (f i))) $ Set.toList $ vars aa)
-	vars = histogramsVars
-	dim = histogramsDimension
+    regcart d n = fromJust $ histogramRegularCartesian d n
+    regsing d n = fromJust $ histogramRegularUnitSingleton d n
+    mul = pairHistogramsMultiply
+    frame f aa = fromJust $ histogramsMapVarsFrame aa (Map.fromList $ map (\(VarInt i) -> (VarInt i, VarInt (f i))) $ Set.toList $ vars aa)
+    vars = histogramsVars
+    dim = histogramsDimension
 
 histogramsIsAntiPlanar :: Histogram -> Bool
 histogramsIsAntiPlanar aa = 
