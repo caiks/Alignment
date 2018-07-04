@@ -11,6 +11,7 @@ The Alignment module requires the [Haskell platform](https://www.haskell.org/dow
 For example in Ubuntu,
 ```
 sudo apt-get update
+
 sudo apt-get install haskell-platform
 ```
 Then download the zip file or use git to get the repository -
@@ -109,5 +110,5 @@ algn dd
 
 Some of the sections of the Overview of the paper have been illustrated with a [Haskell commentary](http://greenlake.co.uk/pages/overview_haskell). The comments provide both (a) code examples for the paper and (b) documentation for the code. 
 
-For programmers who are interested in implementing *inducers*, some of the sections of the paper have been expanded in a [Haskell commentary](pages/inducer_haskell) with links to documentation of the code in the [Alignment repository](https://github.com/caiks/Alignment). The code documentation is gathered together in [Haskell code](pages/inducer_haskell_implementation). 
+For programmers who are interested in implementing *inducers*, some of the sections of the paper have been expanded in a [Haskell commentary](http://greenlake.co.uk/pages/inducer_haskell) with links to documentation of the code in the [Alignment repository](https://github.com/caiks/Alignment). The code documentation is gathered together in [Haskell code](http://greenlake.co.uk/pages/inducer_haskell_implementation). 
 
