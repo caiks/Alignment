@@ -2,9 +2,11 @@
 
 The Alignment repository is a literal Haskell implementation of some of the set-theoretic functions and structures described in the paper *The Theory and Practice of Induction by Alignment* at http://greenlake.co.uk/. 
 
+The Alignment repository is designed with the goal of theoretical correctness rather performance. A fast implementation of *practicable inducers* is in the [AlignmentRepa repository](https://github.com/caiks/AlignmentRepa).
+
 ## Installation
 
-The Alignment module requires the Haskell platform to be installed. See https://www.haskell.org/downloads#platform.
+The Alignment module requires the [Haskell platform](https://www.haskell.org/downloads#platform) to be installed.
 
 For example in Ubuntu,
 ```
@@ -22,7 +24,10 @@ git clone https://github.com/caiks/Alignment.git
 The Alignment modules are not optimised for performance and are mainly intended to allow experimentation in the Haskell interpreter. Load AlignmentDev to import the modules and define various useful abbreviated functions,
 ```
 cd Alignment
-ghci 
+ghci
+```
+```hs
+:set +m
 :l AlignmentDev
 ```
 The Alignment types implement the class type `Represent` defined in AlignmentUtil which requires them to implement the `represent` function,
@@ -103,3 +108,6 @@ algn dd
 ## Documentation
 
 Some of the sections of the Overview of the paper have been illustrated with a [Haskell commentary](http://greenlake.co.uk/pages/overview_haskell). The comments provide both (a) code examples for the paper and (b) documentation for the code. 
+
+For programmers who are interested in implementing *inducers*, some of the sections of the paper have been expanded in a [Haskell commentary](pages/inducer_haskell) with links to documentation of the code in the [Alignment repository](https://github.com/caiks/Alignment). The code documentation is gathered together in [Haskell code](pages/inducer_haskell_implementation). 
+
