@@ -6,7 +6,7 @@ The Alignment repository is designed with the goal of theoretical correctness ra
 
 ## Installation
 
-The Alignment module requires the [Haskell platform](https://www.haskell.org/downloads#platform) to be installed.
+The `Alignment` module requires the [Haskell platform](https://www.haskell.org/downloads#platform) to be installed.
 
 For example in Ubuntu,
 ```
@@ -21,7 +21,7 @@ git clone https://github.com/caiks/Alignment.git
 
 ## Usage
 
-The Alignment modules are not optimised for performance and are mainly intended to allow experimentation in the Haskell interpreter. Load AlignmentDev to import the modules and define various useful abbreviated functions,
+The Alignment modules are not optimised for performance and are mainly intended to allow experimentation in the Haskell interpreter. Load `AlignmentDev` to import the modules and define various useful abbreviated functions,
 ```
 cd Alignment
 ghci
@@ -30,11 +30,11 @@ ghci
 :set +m
 :l AlignmentDev
 ```
-The Alignment types implement the class type `Represent` defined in AlignmentUtil which requires them to implement the `represent` function,
+The Alignment types implement the class type `Represent` defined in `AlignmentUtil` which requires them to implement the `represent` function,
 ```hs
 represent :: Show a => a -> String
 ```
-The `represent` function returns a `String` that approximates to a set-theoretic representation of the structure. AlignmentDev defines the abbreviation `rp`.
+The `represent` function returns a `String` that approximates to a set-theoretic representation of the structure. `AlignmentDev` defines the abbreviation `rp`.
 
 For example, to create a *regular cartesion histogram* of *dimension* 2 and *valency* 3 and display the result,
 ```hs
