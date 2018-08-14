@@ -2963,8 +2963,10 @@ parametersSystemsLayererHighest wmax lmax xmax omax bmax mmax umax pmax uu vv aa
                let w = VarPair (VarPair (VarInt f, VarInt l), VarInt b), 
                let ww = Set.map (\(_,u) -> (nnww u)) ii, 
                let tt = trans (unit [ss `sunion` ssgl w (nnww u) | (ss,u) <- qqll ii]) (sgl w)]
-        hh = qqff $ llqq $ fst $ unzip ll
-        uu' = uu `uunion` (lluu $ snd $ unzip ll)
+        ll' = [(tt,(w,ww)) | (tt,(w,ww)) <- ll, 
+                and [Set.size ww /= Set.size ww' || und tt /= und tt' || ttpp tt /= ttpp tt' | (tt',(w',ww')) <- ll, w > w']]
+        hh = qqff $ llqq $ fst $ unzip ll'
+        uu' = uu `uunion` (lluu $ snd $ unzip ll')
         xx' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xx
         xxrr' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xxrr
         gg = ff `funion` hh
@@ -2980,6 +2982,8 @@ parametersSystemsLayererHighest wmax lmax xmax omax bmax mmax umax pmax uu vv aa
     ffqq = fudsSetTransform
     funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
     fvars = fudsVars
+    ttpp = transformsPartition
+    und = transformsUnderlying
     trans = histogramsSetVarsTransform_u
     unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
     vars = histogramsVars
@@ -3017,8 +3021,10 @@ parametersSystemsLayererHighest_1 wmax lmax xmax omax bmax mmax umax pmax uu vv 
                let w = VarPair (VarPair (VarInt f, VarInt l), VarInt b), 
                let ww = Set.map (\(_,u) -> (nnww u)) ii, 
                let tt = trans (unit [ss `sunion` ssgl w (nnww u) | (ss,u) <- qqll ii]) (sgl w)]
-        hh = qqff $ llqq $ fst $ unzip ll
-        uu' = uu `uunion` (lluu $ snd $ unzip ll)
+        ll' = [(tt,(w,ww)) | (tt,(w,ww)) <- ll, 
+                and [Set.size ww /= Set.size ww' || und tt /= und tt' || ttpp tt /= ttpp tt' | (tt',(w',ww')) <- ll, w > w']]
+        hh = qqff $ llqq $ fst $ unzip ll'
+        uu' = uu `uunion` (lluu $ snd $ unzip ll')
         xx' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xx
         xxrr' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xxrr
         gg = ff `funion` hh
@@ -3034,6 +3040,8 @@ parametersSystemsLayererHighest_1 wmax lmax xmax omax bmax mmax umax pmax uu vv 
     ffqq = fudsSetTransform
     funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
     fvars = fudsVars
+    ttpp = transformsPartition
+    und = transformsUnderlying
     trans = histogramsSetVarsTransform_u
     unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
     vars = histogramsVars
@@ -3071,8 +3079,10 @@ parametersSystemsLayererMaximumRollHighest wmax lmax xmax omax bmax mmax umax pm
                let w = VarPair (VarPair (VarInt f, VarInt l), VarInt b), 
                let ww = Set.map (\(_,u) -> (nnww u)) ii, 
                let tt = trans (unit [ss `sunion` ssgl w (nnww u) | (ss,u) <- qqll ii]) (sgl w)]
-        hh = qqff $ llqq $ fst $ unzip ll
-        uu' = uu `uunion` (lluu $ snd $ unzip ll)
+        ll' = [(tt,(w,ww)) | (tt,(w,ww)) <- ll, 
+                and [Set.size ww /= Set.size ww' || und tt /= und tt' || ttpp tt /= ttpp tt' | (tt',(w',ww')) <- ll, w > w']]
+        hh = qqff $ llqq $ fst $ unzip ll'
+        uu' = uu `uunion` (lluu $ snd $ unzip ll')
         xx' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xx
         xxrr' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xxrr
         gg = ff `funion` hh
@@ -3088,6 +3098,8 @@ parametersSystemsLayererMaximumRollHighest wmax lmax xmax omax bmax mmax umax pm
     ffqq = fudsSetTransform
     funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
     fvars = fudsVars
+    ttpp = transformsPartition
+    und = transformsUnderlying
     trans = histogramsSetVarsTransform_u
     unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
     vars = histogramsVars
@@ -3125,8 +3137,10 @@ parametersSystemsLayererMaximumRollExcludedSelfHighest wmax lmax xmax omax bmax 
                let w = VarPair (VarPair (VarInt f, VarInt l), VarInt b), 
                let ww = Set.map (\(_,u) -> (nnww u)) ii, 
                let tt = trans (unit [ss `sunion` ssgl w (nnww u) | (ss,u) <- qqll ii]) (sgl w)]
-        hh = qqff $ llqq $ fst $ unzip ll
-        uu' = uu `uunion` (lluu $ snd $ unzip ll)
+        ll' = [(tt,(w,ww)) | (tt,(w,ww)) <- ll, 
+                and [Set.size ww /= Set.size ww' || und tt /= und tt' || ttpp tt /= ttpp tt' | (tt',(w',ww')) <- ll, w > w']]
+        hh = qqff $ llqq $ fst $ unzip ll'
+        uu' = uu `uunion` (lluu $ snd $ unzip ll')
         xx' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xx
         xxrr' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xxrr
         gg = ff `funion` hh
@@ -3143,6 +3157,8 @@ parametersSystemsLayererMaximumRollExcludedSelfHighest wmax lmax xmax omax bmax 
     ffqq = fudsSetTransform
     funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
     fvars = fudsVars
+    ttpp = transformsPartition
+    und = transformsUnderlying
     trans = histogramsSetVarsTransform_u
     unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
     vars = histogramsVars
@@ -3182,8 +3198,10 @@ parametersSystemsLayererMaximumRollExcludedSelfHighest_1 wmax lmax xmax omax bma
                let w = VarPair (VarPair (VarInt f, VarInt l), VarInt b), 
                let ww = Set.map (\(_,u) -> (nnww u)) ii, 
                let tt = trans (unit [ss `sunion` ssgl w (nnww u) | (ss,u) <- qqll ii]) (sgl w)]
-        hh = qqff $ llqq $ fst $ unzip ll
-        uu' = uu `uunion` (lluu $ snd $ unzip ll)
+        ll' = [(tt,(w,ww)) | (tt,(w,ww)) <- ll, 
+                and [Set.size ww /= Set.size ww' || und tt /= und tt' || ttpp tt /= ttpp tt' | (tt',(w',ww')) <- ll, w > w']]
+        hh = qqff $ llqq $ fst $ unzip ll'
+        uu' = uu `uunion` (lluu $ snd $ unzip ll')
         xx' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xx
         xxrr' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xxrr
         gg = ff `funion` hh
@@ -3199,6 +3217,8 @@ parametersSystemsLayererMaximumRollExcludedSelfHighest_1 wmax lmax xmax omax bma
     ffqq = fudsSetTransform
     funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
     fvars = fudsVars
+    ttpp = transformsPartition
+    und = transformsUnderlying
     trans = histogramsSetVarsTransform_u
     unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
     vars = histogramsVars
@@ -4030,8 +4050,10 @@ parametersSystemsLayererLevelMaximumRollExcludedSelfHighest
                let w = VarPair (VarPair (VarPair (VarInt f, VarInt g), VarInt l), VarInt b), 
                let ww = Set.map (\(_,u) -> (nnww u)) ii, 
                let tt = trans (unit [ss `sunion` ssgl w (nnww u) | (ss,u) <- qqll ii]) (sgl w)]
-        hh = qqff $ llqq $ fst $ unzip ll
-        uu' = uu `uunion` (lluu $ snd $ unzip ll)
+        ll' = [(tt,(w,ww)) | (tt,(w,ww)) <- ll, 
+                and [Set.size ww /= Set.size ww' || und tt /= und tt' || ttpp tt /= ttpp tt' | (tt',(w',ww')) <- ll, w > w']]
+        hh = qqff $ llqq $ fst $ unzip ll'
+        uu' = uu `uunion` (lluu $ snd $ unzip ll')
         xx' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xx
         xxrr' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xxrr
         gg = ff `funion` hh `funion` depends ffg (fund hh)
@@ -4050,6 +4072,8 @@ parametersSystemsLayererLevelMaximumRollExcludedSelfHighest
     funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
     fvars = fudsVars
     fund = fudsUnderlying
+    ttpp = transformsPartition
+    und = transformsUnderlying
     trans = histogramsSetVarsTransform_u
     unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
     vars = histogramsVars
@@ -4093,8 +4117,10 @@ parametersSystemsLayererLevelMaximumRollExcludedSelfHighest_1
                let w = VarPair (VarPair (VarPair (VarInt f, VarInt g), VarInt l), VarInt b), 
                let ww = Set.map (\(_,u) -> (nnww u)) ii, 
                let tt = trans (unit [ss `sunion` ssgl w (nnww u) | (ss,u) <- qqll ii]) (sgl w)]
-        hh = qqff $ llqq $ fst $ unzip ll
-        uu' = uu `uunion` (lluu $ snd $ unzip ll)
+        ll' = [(tt,(w,ww)) | (tt,(w,ww)) <- ll, 
+                and [Set.size ww /= Set.size ww' || und tt /= und tt' || ttpp tt /= ttpp tt' | (tt',(w',ww')) <- ll, w > w']]
+        hh = qqff $ llqq $ fst $ unzip ll'
+        uu' = uu `uunion` (lluu $ snd $ unzip ll')
         xx' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xx
         xxrr' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xxrr
         gg = ff `funion` hh `funion` depends ffg (fund hh)
@@ -4113,6 +4139,8 @@ parametersSystemsLayererLevelMaximumRollExcludedSelfHighest_1
     funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
     fvars = fudsVars
     fund = fudsUnderlying
+    ttpp = transformsPartition
+    und = transformsUnderlying
     trans = histogramsSetVarsTransform_u
     unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
     vars = histogramsVars
