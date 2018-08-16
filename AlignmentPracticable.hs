@@ -80,6 +80,7 @@ module AlignmentPracticable (
   parametersSystemsBuilderTupleLevelNoSumlayer,
   parametersSystemsBuilderTupleLevelNoSumlayerMultiEffective,
   parametersSystemsBuilderDerivedVarsHighest,
+  parametersSystemsBuilderDerivedVarsHighestNoSumlayer,
   parametersSystemsBuilderDerivedVarsHighestNoSumlayerIncludeHidden,
   parametersSystemsBuilderDerivedVarsLevelHighestNoSumlayerIncludeHidden,
   parametersSystemsPartitionerBinary,
@@ -2652,6 +2653,48 @@ parametersSystemsBuilderDerivedVarsHighest wmax omax uu vv ff xx xxrr
     sgl = Set.singleton
     empty = Set.empty
 
+parametersSystemsBuilderDerivedVarsHighestNoSumlayer :: 
+  Integer -> Integer -> System -> Set.Set Variable -> Fud -> Histogram -> Histogram ->  
+  Maybe (Map.Map (Set.Set Variable, Histogram, Histogram) Double)
+parametersSystemsBuilderDerivedVarsHighestNoSumlayer wmax omax uu vv ff xx xxrr
+  | wmax < 0 || omax < 0 = Nothing
+  | not (vars xx `subset` uvars uu && vars xx == vars xxrr && vv `subset` vars xx) = Nothing
+  | not (fvars ff `subset` uvars uu) = Nothing
+  | otherwise = Just $ maxfst $ buildd (fvars ff `minus` vv) (init (fder ff)) Map.empty
+  where
+    init vv = llmm [((sgl w, histogramEmpty, histogramEmpty),(0,0,0)) | w <- qqll vv]
+    buildd ww qq nn = if mm /= Map.empty then buildd ww mm (nn `Map.union` mm) else (final nn) 
+      where
+        pp = llqq [jj | ((kk,_,_),_) <- mmll qq, w <- qqll (ww `minus` kk), let jj = kk `add` w]
+        mm = top omax $ llmm [((jj, bb, bbrr), ((a-b)/c,-b/c,-u)) |
+          jj <- qqll pp, let u = vol uu jj, u <= wmax, fder (depends ff jj) == jj,
+          let bb = xx `red` jj, let bbrr = xxrr `red` jj,
+          let u' = fromIntegral u, let m = fromIntegral (Set.size jj),
+          let a = algn bb, let b = algn bbrr, let c = u' ** (1/m)]
+    final nn = llmm [((kk,aa,bb),a) | ((kk,aa,bb),a) <- mmll nn, card kk > 1]
+    depends = fudsVarsDepends
+    fder = fudsDerived
+    fvars = fudsVars
+    algn = histogramsAlignment
+    red aa vv = setVarsHistogramsReduce vv aa
+    vars = histogramsVars
+    vol uu vv = fromJust $ systemsVarsVolume uu vv
+    uvars = systemsVars
+    top amax mm = llmm $ flip $ take (fromInteger amax) $ reverse $ sort $ flip $ mmll mm
+    maxfst mm = llmm $ map (\((a,_,_),x) -> (x,a)) $ take 1 $ reverse $ sort $ flip $ mmll mm
+    flip = map (\(a,b) -> (b,a))
+    llmm = Map.fromList
+    mmll = Map.toList
+    add xx x = x `Set.insert` xx
+    minus = Set.difference
+    subset = Set.isSubsetOf
+    card = Set.size
+    qqll = Set.toList
+    llqq = Set.fromList
+    sgl = Set.singleton
+    empty = Set.empty
+
+
 parametersSystemsBuilderDerivedVarsHighestNoSumlayerIncludeHidden :: 
   Integer -> Integer -> System -> Set.Set Variable -> Fud -> Histogram -> Histogram ->  
   Maybe (Map.Map (Set.Set Variable, Histogram, Histogram) Double)
@@ -3150,7 +3193,7 @@ parametersSystemsLayererMaximumRollExcludedSelfHighest wmax lmax xmax omax bmax 
     parter uu kk bb bbrr y1 = fromJust $ parametersSystemsPartitioner mmax umax pmax uu kk bb bbrr y1
     roller qq = fromJust $ parametersRoller 1 qq
     buildffdervar uu vv ff xx xxrr = llmm $ map (\((kk,_,_),a) -> (kk,a)) $ mmll $ fromJust $
-      parametersSystemsBuilderDerivedVarsHighestNoSumlayerIncludeHidden wmax omax uu vv ff xx xxrr
+      parametersSystemsBuilderDerivedVarsHighestNoSumlayer wmax omax uu vv ff xx xxrr
     apply = setVarsSetVarsSetHistogramsHistogramsApply
     fhis = fudsSetHistogram
     qqff = fromJust . setTransformsFud
@@ -3210,7 +3253,7 @@ parametersSystemsLayererMaximumRollExcludedSelfHighest_1 wmax lmax xmax omax bma
     parter uu kk bb bbrr y1 = fromJust $ parametersSystemsPartitioner mmax umax pmax uu kk bb bbrr y1
     roller qq = fromJust $ parametersRoller 1 qq
     buildffdervar uu vv ff xx xxrr = llmm $ map (\((kk,_,_),a) -> (kk,a)) $ mmll $ fromJust $
-      parametersSystemsBuilderDerivedVarsHighestNoSumlayerIncludeHidden wmax omax uu vv ff xx xxrr
+      parametersSystemsBuilderDerivedVarsHighestNoSumlayer wmax omax uu vv ff xx xxrr
     apply = setVarsSetVarsSetHistogramsHistogramsApply
     fhis = fudsSetHistogram
     qqff = fromJust . setTransformsFud
@@ -4481,4 +4524,3 @@ systemsDecompFudsNullableLeafPracticable uu df
     qqll = Set.toList
     llqq :: forall a. (Ord a) => [a] -> Set.Set a
     llqq = Set.fromList
-
