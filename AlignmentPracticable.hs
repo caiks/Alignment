@@ -89,6 +89,7 @@ module AlignmentPracticable (
   parametersSystemsPartitionerBinary,
   parametersSystemsPartitioner,
   parametersSystemsPartitioner_1,
+  parametersSystemsPartitionerMaxRollByM,
   rollValuer,
   systemsRollValuer_1,
   rollValueAlignmenter_u,
@@ -2930,6 +2931,48 @@ parametersSystemsPartitioner_1 mmax umax pmax uu kk bb bbrr
     llqq :: forall a. (Ord a) => [a] -> Set.Set a
     llqq = Set.fromList
     llmm = Map.fromList
+    mmll = Map.toList
+
+parametersSystemsPartitionerMaxRollByM :: 
+  Integer -> Integer -> Integer -> System -> Set.Set Variable -> Histogram -> Histogram -> Double ->
+  Maybe (Set.Set ([Set.Set (State,Int)], Histogram, Histogram))
+parametersSystemsPartitionerMaxRollByM mmax umax pmax uu kk bb bbrr y1
+  | umax < 0 || mmax < 0 || pmax < 0 = Nothing
+  | not (vars bb `subset` uvars uu && vars bb == vars bbrr && kk `subset` vars bb) = Nothing
+  | otherwise = Just $ llqq (concat [topd pmax [((nn, cc, ccrr), ((y1-a2+b2)/c, b2, -m)) |
+        yy <- stirsll kk b, dim yy >= 2, and [vol uu jj <= umax | jj <- qqll yy],
+        let m = fromIntegral $ dim yy,
+        let nn = [llqq (zip (qqll (cart uu jj)) [0..]) | jj <- qqll yy],
+        let tt = trans (unit [foldl sunion sempty [ss `sunion` ssgl (VarIndex w) (ValIndex u) | 
+                       (w,(ss,u)) <- zip [0..] ll] | ll <- qqll (prod nn)]) 
+                       (llqq [VarIndex (fromInteger w) | w <- [0 .. dim yy - 1]]),
+        let cc = bb `tmul` tt, let ccrr = bbrr `tmul` tt,
+        let a2 = sumfacln (ind cc), let b2 = sumfacln (ind ccrr), let c = v ** (1/m)] | b <- [2..mmax]])
+  where
+    v = fromIntegral $ vol uu kk
+    tmul aa tt = transformsHistogramsApply tt aa
+    trans = histogramsSetVarsTransform_u
+    ind = histogramsIndependent
+    sumfacln aa = sum [facln (fromRational c) | (_,c) <- aall aa]
+    facln x = logGamma (x + 1)
+    unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
+    aall = histogramsList
+    vars = histogramsVars
+    sunion = pairStatesUnionLeft
+    vol uu vv = fromJust $ systemsVarsVolume uu vv
+    uvars = systemsVars
+    stirsll vv b = Set.toList $ setsSetPartitionFixed vv b
+    dim = toInteger . Set.size
+    cart uu vv = fromJust $ systemsVarsCartesian uu vv
+    ssgl = stateSingleton
+    sempty = stateEmpty
+    topd amax ll = snd $ unzip $ take (fromInteger amax) $ reverse $ sort $ flip ll
+    flip = map (\(a,b) -> (b,a))
+    prod = listSetsProduct
+    subset = Set.isSubsetOf
+    qqll = Set.toList
+    llqq :: forall a. (Ord a) => [a] -> Set.Set a
+    llqq = Set.fromList
     mmll = Map.toList
 
 rollValuer :: RollValue -> Histogram -> Histogram -> (Histogram, Histogram) 
