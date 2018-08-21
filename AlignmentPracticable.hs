@@ -100,8 +100,10 @@ module AlignmentPracticable (
   parametersSystemsLayererMaximumRollHighest,
   parametersSystemsLayererMaximumRollExcludedSelfHighest,
   parametersSystemsLayererMaximumRollExcludedSelfHighest_1,
+  parametersSystemsLayererMaxRollByMExcludedSelfHighest,
   parametersSystemsLayererLevelMaximumRollExcludedSelfHighest,
   parametersSystemsLayererLevelMaximumRollExcludedSelfHighest_1,
+  parametersSystemsLayererLevelMaxRollByMExcludedSelfHighest,
   parametersSystemsDecomperHighest,
   parametersSystemsDecomperMaximumRollExcludedSelfHighest,
   parametersSystemsDecomperLevelMaximumRollExcludedSelfHighest,
@@ -3396,6 +3398,67 @@ parametersSystemsLayererMaximumRollExcludedSelfHighest_1 wmax lmax xmax omax bma
     flip = map (\(a,b) -> (b,a))
     qqll = Set.toList
 
+parametersSystemsLayererMaxRollByMExcludedSelfHighest :: 
+  Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> 
+  System -> Set.Set Variable -> Histogram -> Histogram -> Integer ->
+  Maybe (System, Fud, Map.Map (Set.Set Variable) Double)
+parametersSystemsLayererMaxRollByMExcludedSelfHighest wmax lmax xmax omax bmax mmax umax pmax uu vv aa aarr f
+  | wmax < 0 || lmax < 0 || xmax < 0 || omax < 0 || bmax < 0 || mmax < 1 || umax < 0 || pmax < 0 = Nothing
+  | not (vars aa `subset` uvars uu && vars aa == vars aarr && vv `subset` vars aa) = Nothing
+  | otherwise = Just $ layer vv uu fudEmpty Map.empty aa aarr f 1
+  where
+    layer vv uu ff mm xx xxrr f l = 
+      if l <= lmax && hh /= fudEmpty && (mm == Map.empty || maxr mm' > maxr mm) then 
+        layer vv uu' gg mm' xx' xxrr' f (l+1) else (uu,ff,mm) 
+      where
+        ll = [(tt,(w,ww)) | (ii,b) <- zip [ii | ((kk,bb,bbrr),y1) <- qqll (buildfftup uu vv ff xx xxrr), 
+               pp <- qqll (parter uu kk bb bbrr y1), nn <- qqll (roller (sgl pp)), ii <- nn, rancd ii < domcd ii] [1..], 
+               let w = VarPair (VarPair (VarInt f, VarInt l), VarInt b), 
+               let ww = Set.map (\(_,u) -> (nnww u)) ii, 
+               let tt = trans (unit [ss `sunion` ssgl w (nnww u) | (ss,u) <- qqll ii]) (sgl w)]
+        ll' = [(tt,(w,ww)) | (tt,(w,ww)) <- ll, 
+                and [Set.size ww /= Set.size ww' || und tt /= und tt' || ttpp tt /= ttpp tt' | (tt',(w',ww')) <- ll, w > w']]
+        hh = qqff $ llqq $ fst $ unzip ll'
+        uu' = uu `uunion` (lluu $ snd $ unzip ll')
+        xx' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xx
+        xxrr' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xxrr
+        gg = ff `funion` hh
+        mm' = buildffdervar uu' vv gg xx' xxrr'
+    buildfftup uu vv ff xx xxrr = fromJust $ 
+      parametersSystemsBuilderTupleNoSumlayerMultiEffective xmax omax bmax mmax uu vv ff xx xxrr
+    parter uu kk bb bbrr y1 = fromJust $ parametersSystemsPartitionerMaxRollByM mmax umax pmax uu kk bb bbrr y1
+    roller qq = fromJust $ parametersRoller 1 qq
+    buildffdervar uu vv ff xx xxrr = llmm $ map (\((kk,_,_),a) -> (kk,a)) $ mmll $ fromJust $
+      parametersSystemsBuilderDerivedVarsHighestNoSumlayer wmax omax uu vv ff xx xxrr
+    apply = setVarsSetVarsSetHistogramsHistogramsApply
+    fhis = fudsSetHistogram
+    qqff = fromJust . setTransformsFud
+    ffqq = fudsSetTransform
+    funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
+    fvars = fudsVars
+    ttpp = transformsPartition
+    und = transformsUnderlying
+    trans = histogramsSetVarsTransform_u
+    unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
+    vars = histogramsVars
+    sunion = pairStatesUnionLeft
+    ssgl = stateSingleton
+    uvars = systemsVars
+    uunion = pairSystemsUnion
+    lluu = listsSystem_u
+    nnww = ValInt . toInteger
+    maxr mm = if mm /= Map.empty then (fst $ head $ take 1 $ reverse $ sort $ flip $ mmll mm) else 0
+    llmm = Map.fromList
+    mmll = Map.toList
+    domcd = Set.size . Set.map fst
+    rancd = Set.size . Set.map snd
+    llqq = Set.fromList
+    union = Set.union
+    subset = Set.isSubsetOf
+    sgl = Set.singleton
+    flip = map (\(a,b) -> (b,a))
+    qqll = Set.toList
+
 parametersSystemsDecomperHighest :: 
   Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> 
   Integer -> Integer ->
@@ -4358,6 +4421,74 @@ parametersSystemsLayererLevelMaximumRollExcludedSelfHighest_1
     sgl = Set.singleton
     flip = map (\(a,b) -> (b,a))
     qqll = Set.toList
+
+parametersSystemsLayererLevelMaxRollByMExcludedSelfHighest :: 
+  Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> 
+  System -> Set.Set Variable -> Fud -> Histogram -> Histogram -> Integer -> Integer ->
+  Maybe (System, Fud, Map.Map (Set.Set Variable) Double)
+parametersSystemsLayererLevelMaxRollByMExcludedSelfHighest 
+  wmax lmax xmax omax bmax mmax umax pmax uu vvg ffg aa aarr f g
+  | wmax < 0 || lmax < 0 || xmax < 0 || omax < 0 || bmax < 0 || mmax < 1 || umax < 0 || pmax < 0 = Nothing
+  | not (vars aa `subset` uvars uu && vars aa == vars aarr && fvars ffg `subset` uvars uu && 
+    vvg `subset` vars aa && fund ffg `subset` vars aa) = Nothing
+  | otherwise = Just $ layer uu fudEmpty Map.empty xx xxrr 1
+  where
+    xx = apply (vars aa) (vars aa `union` fvars ffg) (fhis ffg) aa
+    xxrr = apply (vars aa) (vars aa `union` fvars ffg) (fhis ffg) aarr
+    layer uu ff mm xx xxrr l = 
+      if l <= lmax && hh /= fudEmpty && (mm == Map.empty || maxr mm' > maxr mm) then 
+        layer uu' gg mm' xx' xxrr' (l+1) else (uu,ff,mm) 
+      where
+        ll = [(tt,(w,ww)) | (ii,b) <- zip [ii | ((kk,bb,bbrr),y1) <- qqll (buildfftup uu vvg ffg ff xx xxrr), 
+               pp <- qqll (parter uu kk bb bbrr y1), nn <- qqll (roller (sgl pp)), ii <- nn, rancd ii < domcd ii] [1..], 
+               let w = VarPair (VarPair (VarPair (VarInt f, VarInt g), VarInt l), VarInt b), 
+               let ww = Set.map (\(_,u) -> (nnww u)) ii, 
+               let tt = trans (unit [ss `sunion` ssgl w (nnww u) | (ss,u) <- qqll ii]) (sgl w)]
+        ll' = [(tt,(w,ww)) | (tt,(w,ww)) <- ll, 
+                and [Set.size ww /= Set.size ww' || und tt /= und tt' || ttpp tt /= ttpp tt' | (tt',(w',ww')) <- ll, w > w']]
+        hh = qqff $ llqq $ fst $ unzip ll'
+        uu' = uu `uunion` (lluu $ snd $ unzip ll')
+        xx' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xx
+        xxrr' = apply (vars xx) (vars xx `union` fvars hh) (fhis hh) xxrr
+        gg = ff `funion` hh `funion` depends ffg (fund hh)
+        mm' = buildffdervar uu' (vars aa) ffg gg xx' xxrr'
+    buildfftup uu vvg ffg ff xx xxrr = 
+      fromJust $ parametersSystemsBuilderTupleLevelNoSumlayerMultiEffective xmax omax bmax mmax uu vvg ffg ff xx xxrr
+    parter uu kk bb bbrr y1 = fromJust $ parametersSystemsPartitionerMaxRollByM mmax umax pmax uu kk bb bbrr y1
+    roller qq = fromJust $ parametersRoller 1 qq
+    buildffdervar uu vv ffg ff xx xxrr = llmm $ map (\((kk,_,_),a) -> (kk,a)) $ mmll $ fromJust $
+      parametersSystemsBuilderDerivedVarsLevelHighestNoSumlayer wmax omax uu vv ffg ff xx xxrr
+    apply = setVarsSetVarsSetHistogramsHistogramsApply
+    fhis = fudsSetHistogram
+    qqff = fromJust . setTransformsFud
+    depends = fudsVarsDepends
+    ffqq = fudsSetTransform
+    funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
+    fvars = fudsVars
+    fund = fudsUnderlying
+    ttpp = transformsPartition
+    und = transformsUnderlying
+    trans = histogramsSetVarsTransform_u
+    unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
+    vars = histogramsVars
+    sunion = pairStatesUnionLeft
+    ssgl = stateSingleton
+    uvars = systemsVars
+    uunion = pairSystemsUnion
+    lluu = listsSystem_u
+    nnww = ValInt . toInteger
+    maxr mm = if mm /= Map.empty then (fst $ head $ take 1 $ reverse $ sort $ flip $ mmll mm) else 0
+    llmm = Map.fromList
+    mmll = Map.toList
+    domcd = Set.size . Set.map fst
+    rancd = Set.size . Set.map snd
+    llqq = Set.fromList
+    union = Set.union
+    subset = Set.isSubsetOf
+    sgl = Set.singleton
+    flip = map (\(a,b) -> (b,a))
+    qqll = Set.toList
+
 
 parametersSystemsDecomperLevelMaximumRollExcludedSelfHighest :: 
   Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> 
