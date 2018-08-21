@@ -2940,14 +2940,14 @@ parametersSystemsPartitionerMaxRollByM mmax umax pmax uu kk bb bbrr y1
   | umax < 0 || mmax < 0 || pmax < 0 = Nothing
   | not (vars bb `subset` uvars uu && vars bb == vars bbrr && kk `subset` vars bb) = Nothing
   | otherwise = Just $ llqq (concat [topd pmax [((nn, cc, ccrr), ((y1-a2+b2)/c, b2, -m)) |
-        yy <- stirsll kk b, dim yy >= 2, and [vol uu jj <= umax | jj <- qqll yy],
-        let m = fromIntegral $ dim yy,
+        yy <- stirsll kk m, and [vol uu jj <= umax | jj <- qqll yy],   
         let nn = [llqq (zip (qqll (cart uu jj)) [0..]) | jj <- qqll yy],
         let tt = trans (unit [foldl sunion sempty [ss `sunion` ssgl (VarIndex w) (ValIndex u) | 
                        (w,(ss,u)) <- zip [0..] ll] | ll <- qqll (prod nn)]) 
-                       (llqq [VarIndex (fromInteger w) | w <- [0 .. dim yy - 1]]),
+                       (llqq [VarIndex (fromInteger w) | w <- [0 .. m-1]]),
         let cc = bb `tmul` tt, let ccrr = bbrr `tmul` tt,
-        let a2 = sumfacln (ind cc), let b2 = sumfacln (ind ccrr), let c = v ** (1/m)] | b <- [2..mmax]])
+        let a2 = sumfacln (ind cc), let b2 = sumfacln (ind ccrr)] | 
+          m <- [2 .. mmax], let c = v ** (1 / fromIntegral m)])
   where
     v = fromIntegral $ vol uu kk
     tmul aa tt = transformsHistogramsApply tt aa
@@ -2962,7 +2962,6 @@ parametersSystemsPartitionerMaxRollByM mmax umax pmax uu kk bb bbrr y1
     vol uu vv = fromJust $ systemsVarsVolume uu vv
     uvars = systemsVars
     stirsll vv b = Set.toList $ setsSetPartitionFixed vv b
-    dim = toInteger . Set.size
     cart uu vv = fromJust $ systemsVarsCartesian uu vv
     ssgl = stateSingleton
     sempty = stateEmpty
