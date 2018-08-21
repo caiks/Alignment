@@ -106,7 +106,9 @@ module AlignmentPracticable (
   parametersSystemsLayererLevelMaxRollByMExcludedSelfHighest,
   parametersSystemsDecomperHighest,
   parametersSystemsDecomperMaximumRollExcludedSelfHighest,
+  parametersSystemsDecomperMaxRollByMExcludedSelfHighest,
   parametersSystemsDecomperLevelMaximumRollExcludedSelfHighest,
+  parametersSystemsDecomperLevelMaxRollByMExcludedSelfHighest,
   parametersSystemsDecomperMaximumRollExcludedSelfHighestGoodness,
   systemsDecompFudsNullablePracticable,
   systemsDecompFudsNullableLeafPracticable
@@ -3605,6 +3607,79 @@ parametersSystemsDecomperMaximumRollExcludedSelfHighest wmax lmax xmax omax bmax
     subset = Set.isSubsetOf
     flip = map (\(a,b) -> (b,a))
 
+parametersSystemsDecomperMaxRollByMExcludedSelfHighest :: 
+  Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> 
+  Integer -> Integer ->
+  System -> Set.Set Variable -> Histogram -> 
+  Maybe (System, DecompFud)
+parametersSystemsDecomperMaxRollByMExcludedSelfHighest wmax lmax xmax omax bmax mmax umax pmax mult seed uu vv aa
+  | wmax < 0 || lmax < 0 || xmax < 0 || omax < 0 || bmax < 0 || mmax < 1 || umax < 0 || pmax < 0 = Nothing
+  | not (isint aa) || mult < 1 = Nothing
+  | not (vars aa `subset` uvars uu && vv `subset` vars aa) = Nothing
+  | otherwise = Just $ decomp uu emptyTree 1 seed
+  where
+    decomp uu zz f s
+      | zz == emptyTree && (ffr == fudEmpty || nnr == mempty || ar <= 0) = (uu, decompFudEmpty)
+      | zz == emptyTree = decomp uur zzr (f+1) (s + mult)
+      | mm == [] = (uu, zzdf (zztrim zz)) 
+      | otherwise = decomp uuc zzc (f+1) (s + mult)
+      where
+        aarr = ashuffle aa s mult
+        (uur,ffr,nnr) = layerer uu aa aarr f
+        (ar,kkr) = maxd nnr
+        ffr' = if ar > 0 then depends ffr kkr else fudEmpty
+        zzr = tsgl (stateEmpty,ffr')
+        mm = [(size bb,nn,ss,bb) | (nn,yy) <- qqll (treesPlaces zz), 
+                 let rrc = llsthis nn, let hhc = llfhis nn, let (_,ff) = last nn, ff /= fudEmpty,
+                 ss <- qqll (cart uu (fder ff) `minus` dom (treesRoots yy)),
+                 let xx = hhc `union` rrc `add` unit ss,
+                 let bb = apply vv vv xx aa,
+                 size bb > 0]
+        (_,nn,ss,bb) = last $ sort mm
+        bbrr = ashuffle bb s mult
+        (uuc,ffc,nnc) = layerer uu bb bbrr f
+        (ac,kkc) = maxd nnc
+        ffc' = if ac > 0 then depends ffc kkc else fudEmpty
+        zzc = pathsTree $ treesPaths zz `add` (nn ++ [(ss,ffc')])
+    layerer uu aa aarr f = fromJust $ 
+      parametersSystemsLayererMaxRollByMExcludedSelfHighest wmax lmax xmax omax bmax mmax umax pmax uu vv aa aarr f
+    zztrim = pathsTree . Set.map lltrim . treesPaths
+    lltrim ll = let (_,ff) = last ll in if ff == fudEmpty then init ll else ll
+    llsthis = Set.fromList . map unit . fst . unzip
+    llfhis = bigcup . Set.fromList . map fhis . snd . unzip
+    zzdf zz = fromJust $ treePairStateFudsDecompFud zz
+    depends = fudsVarsDepends
+    ffqq = fudsSetTransform
+    fder = fudsDerived
+    fhis = fudsSetHistogram
+    apply = setVarsSetVarsSetHistogramsHistogramsApply
+    aahh aa = fromJust $ histogramsHistory aa
+    hhaa hh = historiesHistogram hh
+    hshuffle hh r = fromJust $ historiesShuffle hh (fromInteger r)
+    ashuffle aa seed mult = let hh = aahh aa in 
+                            resize (size aa) $ foldl1 aadd [hhaa $ hshuffle hh (seed + r) | r <- [0..mult-1]]
+    isint = histogramsIsIntegral
+    aadd xx yy = fromJust $ pairHistogramsAdd xx yy
+    resize z aa = fromJust $ histogramsResize z aa
+    unit = fromJust . setStatesHistogramUnit . Set.singleton 
+    size = histogramsSize
+    vars = histogramsVars
+    cart = systemsSetVarsSetStateCartesian_u
+    uvars = systemsVars
+    tsgl r = Tree $ Map.singleton r emptyTree
+    maxd mm = if mm /= mempty then (head $ take 1 $ reverse $ sort $ flip $ mmll mm) else (0,empty)
+    bigcup = setSetsUnion
+    dom = relationsDomain
+    mempty = Map.empty
+    mmll = Map.toList
+    minus = Set.difference
+    add qq x = Set.insert x qq
+    qqll = Set.toList
+    union = Set.union
+    empty = Set.empty
+    subset = Set.isSubsetOf
+    flip = map (\(a,b) -> (b,a))
+
 parametersSystemsSamplesShufflesLevelsFudsFunctionInitialTuple :: 
   Integer -> System -> Histogram -> Histogram -> Set.Set Variable -> Fud -> Fud -> 
   Maybe (Map.Map (Set.Set Variable) Double)
@@ -4534,6 +4609,92 @@ parametersSystemsDecomperLevelMaximumRollExcludedSelfHighest
                        (wmaxg,vvg,ffg) <- Set.toList (treesElements zzg)]
     layerer wmax uu vvg ffg aa aarr f g = fromJust $ 
       parametersSystemsLayererLevelMaximumRollExcludedSelfHighest 
+        wmax lmax xmax omax bmax mmax umax pmax uu vvg ffg aa aarr f g
+    zztrim = pathsTree . Set.map lltrim . treesPaths
+    lltrim ll = let (_,ff) = last ll in if ff == fudEmpty then init ll else ll
+    llsthis = Set.fromList . map unit . fst . unzip
+    llfhis = bigcup . Set.fromList . map fhis . snd . unzip
+    zzdf zz = fromJust $ treePairStateFudsDecompFud zz
+    qqff = fromJust . setTransformsFud
+    depends = fudsVarsDepends
+    ffqq = fudsSetTransform
+    fvars = fudsVars
+    fund = fudsUnderlying
+    funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
+    fder = fudsDerived
+    fhis = fudsSetHistogram
+    apply = setVarsSetVarsSetHistogramsHistogramsApply
+    aahh aa = fromJust $ histogramsHistory aa
+    hhaa hh = historiesHistogram hh
+    hshuffle hh r = fromJust $ historiesShuffle hh (fromInteger r)
+    ashuffle aa seed mult = let hh = aahh aa in 
+                            resize (size aa) $ foldl1 aadd [hhaa $ hshuffle hh (seed + r) | r <- [0..mult-1]]
+    isint = histogramsIsIntegral
+    aadd xx yy = fromJust $ pairHistogramsAdd xx yy
+    resize z aa = fromJust $ histogramsResize z aa
+    unit = fromJust . setStatesHistogramUnit . Set.singleton 
+    size = histogramsSize
+    vars = histogramsVars
+    cart = systemsSetVarsSetStateCartesian_u
+    uvars = systemsVars
+    tsgl r = Tree $ Map.singleton r emptyTree
+    maxd mm = if mm /= mempty then (head $ take 1 $ reverse $ sort $ flip $ mmll mm) else (0,empty)
+    bigcup = setSetsUnion
+    dom = relationsDomain
+    mempty = Map.empty
+    mmll = Map.toList
+    minus = Set.difference
+    add qq x = Set.insert x qq
+    qqll = Set.toList
+    union = Set.union
+    empty = Set.empty
+    subset = Set.isSubsetOf
+    flip = map (\(a,b) -> (b,a))
+
+parametersSystemsDecomperLevelMaxRollByMExcludedSelfHighest :: 
+  Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> 
+  Integer -> Integer ->
+  System -> Set.Set Variable -> Histogram -> Tree (Integer, Set.Set Variable, Fud) -> 
+  Maybe (System, DecompFud)
+parametersSystemsDecomperLevelMaxRollByMExcludedSelfHighest 
+  lmax xmax omax bmax mmax umax pmax mult seed uu vv aa zzg
+  | lmax < 0 || xmax < 0 || omax < 0 || bmax < 0 || mmax < 1 || umax < 0 || pmax < 0 = Nothing
+  | not (isint aa) || mult < 1 = Nothing
+  | not (vars aa `subset` uvars uu && vv `subset` vars aa) = Nothing
+  | not (okLevel zzg) = Nothing
+  | otherwise = Just $ decomp uu emptyTree 1 seed
+  where
+    decomp uu zz f s
+      | zz == emptyTree && ffr == fudEmpty = (uu, decompFudEmpty)
+      | zz == emptyTree = decomp uur zzr (f+1) (s + mult)
+      | mm == [] = (uu, zzdf (zztrim zz)) 
+      | otherwise = decomp uuc zzc (f+1) (s + mult)
+      where
+        aarr = ashuffle aa s mult
+        (uur,ffr,_) = level uu aa aarr zzg f 1
+        zzr = tsgl (stateEmpty,ffr)
+        mm = [(size bb,nn,ss,bb) | (nn,yy) <- qqll (treesPlaces zz), 
+                 let rrc = llsthis nn, let hhc = llfhis nn, let (_,ff) = last nn, ff /= fudEmpty,
+                 ss <- qqll (cart uu (fder ff) `minus` dom (treesRoots yy)),
+                 let xx = hhc `union` rrc `add` unit ss,
+                 let bb = apply vv vv xx aa,
+                 size bb > 0]
+        (_,nn,ss,bb) = last $ sort mm
+        bbrr = ashuffle bb s mult
+        (uuc,ffc,_) = level uu bb bbrr zzg f 1
+        zzc = pathsTree $ treesPaths zz `add` (nn ++ [(ss,ffc)])
+    level uu aa aarr (Tree ttg) f g = foldl next (uu,fudEmpty,g) (Map.toList ttg)
+      where       
+        next (uu,ff,g) ((wmaxg,vvg,ffg),xxg) = (uu',ff `funion` gg',gh+1)
+          where
+            (uuh,ffh,gh) = level uu aa aarr xxg f g
+            (uu',gg,nn) = layerer wmaxg uuh vvg (ffg `funion` ffh) aa aarr f gh
+            (a,kk) = maxd nn
+            gg' = if a > 0 then depends gg kk else fudEmpty
+    okLevel zzg = and [wmaxg >= 0 && vvg `subset` vars aa && fvars ffg `subset` uvars uu && fund ffg `subset` vars aa |
+                       (wmaxg,vvg,ffg) <- Set.toList (treesElements zzg)]
+    layerer wmax uu vvg ffg aa aarr f g = fromJust $ 
+      parametersSystemsLayererLevelMaxRollByMExcludedSelfHighest 
         wmax lmax xmax omax bmax mmax umax pmax uu vvg ffg aa aarr f g
     zztrim = pathsTree . Set.map lltrim . treesPaths
     lltrim ll = let (_,ff) = last ll in if ff == fudEmpty then init ll else ll
