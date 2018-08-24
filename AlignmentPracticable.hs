@@ -13,6 +13,7 @@ module AlignmentPracticable (
   parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionInitialFudDecrementing_u,
   parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionInitialFudDecrementing_u1,
   parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionInitialFudDecrementing_u2,
+  parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionInitialFudDecrementingMaxRollByM_u,
   parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionInitialFudDecrementingLimitedValency_u,
   parametersSystemsSamplesShufflesFudsFunctionsFunctionNeighbourhoodFudDecrementing,
   parametersSystemsSamplesShufflesFudsFunctionsFunctionNeighbourhoodFudDecrementing_u,
@@ -25,6 +26,7 @@ module AlignmentPracticable (
   parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionOptimiserFudDecrementing,
   parametersSystemsSamplesShufflesFudsTuplesFunctionOptimiserFudDecrementingMaximumRoll,
   parametersSystemsSamplesShufflesFudsTuplesFunctionOptimiserFudDecrementingMaxRollByM,
+  parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionOptimiserFudDecrementingMaxRollByM,
   parametersSystemsSamplesShufflesFudsTuplesFunctionOptimiserFudDecrementingLimitedValency,  
   parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionOptimiserFudDecrementingLimitedValency,
   parametersSystemsSamplesShufflesFudsFunctionInitialTuple,
@@ -551,6 +553,55 @@ parametersSystemsSamplesShufflesFudsTuplesFunctionInitialFudDecrementingMaxRollB
     llqq = Set.fromList
     llmm = Map.fromList
 
+-- AYOR
+parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionInitialFudDecrementingMaxRollByM_u :: 
+  Integer -> Integer -> System -> Histogram -> Histogram -> Fud -> Set.Set Variable -> [Variable] -> 
+  (Map.Map Fud Double,(System,[Variable]))
+parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionInitialFudDecrementingMaxRollByM_u mmax pmax uu aa aarr ff kk ll = 
+  (mm,(uu',ll'))
+  where
+    xx = [((i, pptt pp x), (x, ppcd pp)) | 
+           ((i,pp),x) <- zip [(i, self uu jj) | (zz,i) <- zip (stirsll kk mmax) [1..], dim zz >= 2, jj <- qqll zz] ll]
+    uu' = uu `uunion` (lluu $ map (\(x,c) -> (x,llqq [ValInt i | i <- [1..c]])) $ snd $ unzip xx)
+    ll' = drop (length xx) ll
+    mm = llmm (concat [top pmax  [(ii, (algn (aa `fmul` gg) - algn (aarr `fmul` gg)) / (w' ** (1/m))) |
+                 ii <- (elems $ llmmw funion $ map (\(i,tt) -> (i,ttff tt)) $ fst $ unzip xx), 
+                 Set.size (fder ii) == fromIntegral b,
+                 let gg = depends ff kk `funion` ii,
+                 let ww = fder gg, let w = vol uu' ww,
+                 let w' = fromIntegral w, let m = fromIntegral (Set.size ww)] | b <- [2..mmax]])
+    algn = histogramsAlignment
+    depends = fudsVarsDepends
+    ttff = setTransformsFud_u . Set.singleton
+    qqff = setTransformsFud_u
+    ffqq = fudsSetTransform
+    fmul aa ff = fudsHistogramsApply ff aa
+    fder = fudsDerived
+    funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
+    fsys = fudsSystemImplied
+    vol = systemsSetVarsVolume_u
+    uunion = pairSystemsUnion
+    uvars = systemsVars
+    top pmax ll = flip $ take (fromInteger pmax) $ reverse $ sort $ flip ll
+    flip = map (\(a,b) -> (b,a))
+    stirsll vv bmax = Set.toList $ setsSetPartitionLimited vv bmax
+    dim = toInteger . Set.size
+    ppcd = toInteger . Set.size . partitionsSetComponent
+    self = systemsSetVarsPartitionSelf_u
+    qqll = Set.toList
+    llqq = Set.fromList
+    llmm = Map.fromList
+    llmmw = Map.fromListWith
+    lluu = listsSystem_u
+    pptt ::  Partition -> Variable -> Transform
+    pptt pp x = trans (unit [ss `sunion` single x (ValInt i) | (cc,i) <- zip (ppqq pp) [1..], ss <- qqll cc]) x
+    trans xx w = histogramsSetVarsTransform_u xx (Set.singleton w)
+    unit qq = listsHistogram_u $ map (\ss -> (ss,1)) $ qq
+    ppqq = Set.toList . partitionsSetComponent
+    sunion = pairStatesUnionLeft
+    single = stateSingleton
+    elems = Map.elems
+
 parametersSystemsSamplesShufflesFudsFunctionsFunctionNeighbourhoodFudDecrementing :: 
   System -> Histogram -> Histogram -> Fud -> Map.Map Fud Double -> Maybe (Map.Map Fud Double)
 parametersSystemsSamplesShufflesFudsFunctionsFunctionNeighbourhoodFudDecrementing uu aa aarr ff qq
@@ -975,6 +1026,44 @@ parametersSystemsSamplesShufflesFudsTuplesFunctionOptimiserFudDecrementingMaxRol
     cup = Set.union
     subset = Set.isSubsetOf
 
+parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionOptimiserFudDecrementingMaxRollByM :: 
+  Integer -> Integer -> System -> Histogram -> Histogram -> Fud -> Set.Set Variable -> [Variable] ->
+  Maybe (Tree (Fud,Double),(System,[Variable]))
+parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionOptimiserFudDecrementingMaxRollByM 
+  mmax pmax uu aa aarr ff kk ll
+  | mmax < 0 = Nothing
+  | vars aa `subset` uvars uu && fvars ff `subset` uvars uu && vars aarr == vars aa &&
+    fund ff `subset` vars aa && kk `subset` (vars aa `cup` fvars ff) = Just $ 
+      if jj == [] then (emptyTree, (uu,ll)) else (pathsTree (Set.fromList jj), (uu',ll'))
+  | otherwise = Nothing
+  where
+    (jj,hh) = unzip $ opt (zzcsddecneigh aa aarr ff) (zzcsddecinit mmax pmax uu aa aarr ff kk ll)
+    (uu',ll') = last hh
+    opt pp ([],_) = []
+    opt pp (((gg,a):qq),(uu,ll)) = (tt,(uu',ll')) : opt pp (qq,(uu',ll'))
+      where
+        (tt,hh) = unzip $ ts (gg,a) uu ll
+        (uu',ll') = last hh
+        ts (gg,a) uu ll = ((gg,a),(uu,ll)) : (if mm == [] then [] else ts (gg',a') uu' ll')
+          where
+            (mm,(uu',ll')) = pp [(gg,a)] uu ll
+            [(gg',a')] = top 1 mm
+    zzcsddecinit mmax pmax uu aa aarr ff kk ll = (mmll mm',(uu',ll'))
+      where (mm',(uu',ll')) = parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionInitialFudDecrementingMaxRollByM_u mmax pmax uu aa aarr ff kk ll
+    zzcsddecneigh aa aarr ff mm uu ll = (mmll mm',(uu',ll'))
+      where (mm',(uu',ll')) = systemsSamplesShufflesFudsFunctionsListVariablesFunctionNeighbourhoodFudDecrementing_u uu aa aarr ff (llmm mm) ll
+    fvars = fudsVars
+    fund = fudsUnderlying
+    vars = histogramsVars
+    uvars = systemsVars
+    top pmax mm = flip $ take (fromInteger pmax) $ reverse $ sort $ flip mm
+    flip = map (\(a,b) -> (b,a))
+    isempty = Map.null
+    keys = Map.keys
+    llmm = Map.fromList
+    mmll = Map.toList
+    cup = Set.union
+    subset = Set.isSubsetOf
 
 parametersSystemsSamplesShufflesFudsTuplesFunctionInitialFudDecrementingLimitedValency :: 
   Integer -> Integer -> System -> Histogram -> Histogram -> Fud -> Set.Set Variable -> Maybe (Map.Map Fud Double)
