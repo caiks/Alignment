@@ -46,10 +46,12 @@ module AlignmentPracticable (
   parametersSetVariablesCommonFudsFudsFunctionOptimiserTupleCardinalityUpper,
   parametersSystemsSamplesShufflesSearcherFud,
   parametersSystemsSamplesShufflesSearcherFudHighest,
+  parametersSystemsSamplesShufflesSearcherFudMaxRollByM,
   parametersSystemsSamplesShufflesSearcherFudExcludedSelf,
   parametersSystemsSamplesShufflesCommonFudsSearcherFudHighest,
   parametersSystemsSamplesShufflesListVariablesSearcherFud,
   parametersSystemsSamplesShufflesListVariablesSearcherFudHighest,
+  parametersSystemsSamplesShufflesListVariablesSearcherFudMaxRollByM,
   parametersSystemsSamplesShufflesCommonFudsListVariablesSearcherFudHighest,
   parametersSystemsSamplesShufflesCommonFudsListVariablesSearcherFudHighest_d,
   parametersSystemsSamplesShufflesLevelsListVariablesSearcherFudHighest,
@@ -1501,6 +1503,109 @@ parametersSystemsSamplesShufflesListVariablesSearcherFud lmax xmax omax bmax mma
     sortdescff ff ll = reverse $ sort $ map (\(kk,a) -> ((a,-(sumlayer ff kk)),kk)) ll 
     sumlayer ff kk = sum [layer ff (sgl w) | w <- qqll kk]
     layer = fudsSetVarsLayer
+    elems = Map.elems
+    llmm = Map.fromList
+    mmll = Map.toList
+    qqll = Set.toList
+    llqq = Set.fromList
+    notmem = Set.notMember
+    subset = Set.isSubsetOf
+    sgl = Set.singleton
+
+parametersSystemsSamplesShufflesSearcherFudMaxRollByM :: 
+  Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> 
+  System -> Histogram -> Histogram ->
+  Maybe [Fud]
+parametersSystemsSamplesShufflesSearcherFudMaxRollByM lmax xmax omax bmax mmax pmax uu aa aarr
+  | lmax < 0 || xmax < 0 || omax < 0 || bmax < 0 || mmax < 1 || pmax < 0 = Nothing
+  | vars aa `subset` uvars uu = Just $ ls uu fudEmpty lmax
+  | otherwise = Nothing
+  where
+    ls _ _ 0 = []
+    ls uu ff h = gg : ls (uu `uunion` fsys gg) gg (h-1)
+      where
+        gg = ff `funion` llff [(pptt . ttpp . fftt) (depends (fexplode hh) w) | 
+               kk <- topff (bmax `div` mmax) ff (zzffcstupopt xmax omax uu aa aarr ff), 
+               hh <- concat (map (top 1) (zzll (zzcsddecoptmm mmax pmax uu aa aarr ff kk))), 
+               w <- qqll (fder hh)]
+    zzffcstupopt xmax omax uu aa aarr ff = fst $ unzip $ fromJust $ 
+      parametersSystemsSamplesShufflesFudsFunctionOptimiserTuple xmax omax uu aa aarr ff
+    zzcsddecoptmm mmax pmax uu aa aarr ff kk = fromJust $
+      parametersSystemsSamplesShufflesFudsTuplesFunctionOptimiserFudDecrementingMaxRollByM 
+        mmax pmax uu aa aarr ff kk
+    depends ff w = fudsVarsDepends ff (Set.singleton w)
+    fexplode ff = fromJust $ fudVarPartitionsExplode ff
+    fsys = fudsSystemImplied
+    fftt = fudsTransform
+    llff = fromJust . setTransformsFud . Set.fromList
+    qqff = fromJust . setTransformsFud
+    ffqq = fudsSetTransform
+    fder = fudsDerived
+    funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
+    ttpp = transformsPartition
+    pptt = partitionsTransformVarPartition 
+    vars = histogramsVars
+    uunion = pairSystemsUnion
+    uvars = systemsVars
+    top amax ll = snd $ unzip $ take (fromInteger amax) $ reverse $ sort $ flip ll
+    flip = map (\(a,b) -> (b,a))
+    topff amax ff ll = snd $ unzip $ take (fromInteger amax) $ sortdescff ff $ concat $ map mmll ll
+    sortdescff ff ll = reverse $ sort $ map (\(kk,a) -> ((a,-(sumlayer ff kk)),kk)) ll 
+    sumlayer ff kk = sum [layer ff (sgl w) | w <- qqll kk]
+    layer = fudsSetVarsLayer
+    zzll = Set.toList . treesPaths
+    mmll = Map.toList
+    qqll = Set.toList
+    subset = Set.isSubsetOf
+    sgl = Set.singleton
+
+parametersSystemsSamplesShufflesListVariablesSearcherFudMaxRollByM :: 
+  Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> 
+  System -> Histogram -> Histogram -> [Variable] ->
+  Maybe ([Fud],(System,[Variable]))
+parametersSystemsSamplesShufflesListVariablesSearcherFudMaxRollByM lmax xmax omax bmax mmax pmax uu aa aarr ll
+  | lmax < 0 || xmax < 0 || omax < 0 || bmax < 0 || mmax < 1 || pmax < 0 = Nothing
+  | vars aa `subset` uvars uu = Just $ (pp,(uu',ll'))
+  | otherwise = Nothing
+  where
+    qq = ls fudEmpty uu ll lmax
+    pp = fst $ unzip $ qq
+    (uu',ll') = if qq /= [] then (last $ snd $ unzip qq) else (uu,ll)
+    ls _ _ _ 0 = []
+    ls ff uu ll h = (gg,(uu',ll')) : ls gg uu' ll' (h-1)
+      where
+        yy = ls2 (topff (bmax `div` mmax) ff (zzffcstupopt xmax omax uu aa aarr ff)) uu ll
+        gg = ff `funion` llff (elems (llmm [(rr, tt) | hh <- (concat $ fst $ unzip yy), 
+                                             w <- qqll (fder hh), let tt = fftt (depends hh w), 
+                                             let rr = ttpp tt, rr `notmem` nn]))
+        (uu',ll') = if yy /= [] then (last $ snd $ unzip yy) else (uu,ll)
+        nn = llqq [ttpp tt | tt <- (qqll . ffqq) ff]
+        ls2 [] _ _ = []
+        ls2 (kk:bb) uu ll = (concat (map (top 1) (zzll xx)),(uu',ll')) : ls2 bb uu' ll'
+          where
+            (xx,(uu',ll')) = zzllcsddecoptmm mmax pmax uu aa aarr ff kk ll
+    zzffcstupopt xmax omax uu aa aarr ff = fst $ unzip $ fromJust $ 
+      parametersSystemsSamplesShufflesFudsFunctionOptimiserTuple xmax omax uu aa aarr ff
+    zzllcsddecoptmm mmax pmax uu aa aarr ff kk ll = fromJust $
+      parametersSystemsSamplesShufflesFudsTuplesListVariablesFunctionOptimiserFudDecrementingMaxRollByM 
+        mmax pmax uu aa aarr ff kk ll
+    depends ff w = fudsVarsDepends ff (Set.singleton w)
+    fftt = fudsTransform
+    llff = fromJust . setTransformsFud . Set.fromList
+    qqff = fromJust . setTransformsFud
+    ffqq = fudsSetTransform
+    fder = fudsDerived
+    funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
+    ttpp = transformsPartition
+    vars = histogramsVars
+    uvars = systemsVars
+    top amax ll = snd $ unzip $ take (fromInteger amax) $ reverse $ sort $ flip ll
+    flip = map (\(a,b) -> (b,a))
+    topff amax ff ll = snd $ unzip $ take (fromInteger amax) $ sortdescff ff $ concat $ map mmll ll
+    sortdescff ff ll = reverse $ sort $ map (\(kk,a) -> ((a,-(sumlayer ff kk)),kk)) ll 
+    sumlayer ff kk = sum [layer ff (sgl w) | w <- qqll kk]
+    layer = fudsSetVarsLayer
+    zzll = Set.toList . treesPaths
     elems = Map.elems
     llmm = Map.fromList
     mmll = Map.toList
