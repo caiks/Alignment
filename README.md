@@ -1,6 +1,6 @@
 # Alignment
 
-The Alignment repository is a literal Haskell implementation of some of the set-theoretic functions and structures described in the paper *The Theory and Practice of Induction by Alignment* at http://greenlake.co.uk/. 
+The Alignment repository is a literal Haskell implementation of some of the set-theoretic functions and structures described in the paper *The Theory and Practice of Induction by Alignment* at https://greenlake.co.uk/. 
 
 The Alignment repository is designed with the goal of theoretical correctness rather performance. A fast implementation of *practicable inducers* is in the [AlignmentRepa repository](https://github.com/caiks/AlignmentRepa).
 
@@ -107,7 +107,7 @@ algn dd
 
 ## Documentation
 
-Some of the sections of the Overview of the paper have been illustrated with a [Haskell commentary](http://greenlake.co.uk/pages/overview_haskell). The comments provide both (a) code examples for the paper and (b) documentation for the code. 
+Some of the sections of the Overview of the paper have been illustrated with a [Haskell commentary](https://greenlake.co.uk/pages/overview_haskell). The comments provide both (a) code examples for the paper and (b) documentation for the code. 
 
-For programmers who are interested in implementing *inducers*, some of the sections of the paper have been expanded in a [Haskell commentary](http://greenlake.co.uk/pages/inducer_haskell) with links to documentation of the code in the repository. The code documentation is gathered together in [Haskell code](http://greenlake.co.uk/pages/inducer_haskell_implementation). 
+For programmers who are interested in implementing *inducers*, some of the sections of the paper have been expanded in a [Haskell commentary](https://greenlake.co.uk/pages/inducer_haskell) with links to documentation of the code in the repository. The code documentation is gathered together in [Haskell code](https://greenlake.co.uk/pages/inducer_haskell_implementation). 
 
