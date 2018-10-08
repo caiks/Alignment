@@ -5048,18 +5048,18 @@ systemsDecompFudsNullablePracticable uu df g
         ttc = trans aac (sgl wc)
     nullable :: Fud -> Fud -> Fud
     nullable ff ggc
-      | ggc == fudEmpty = ff `funion` qqff (Set.map wwttr (fder ff))
-      | otherwise = ggc `funion` ff `funion` qqff (Set.map wwttc (fder ff))
-      where
-        wwttr w = trans aa (sgl w') 
+      | ggc == fudEmpty = ff `funion` qqff (llqq [wwttr w i | (w,i) <- zip (qqll (fder ff)) [1..]])
+      | otherwise = ggc `funion` ff `funion` qqff (llqq [wwttc w i | (w,i) <- zip (qqll (fder ff)) [1..]])
+     where
+        wwttr w i = trans aa (sgl w') 
           where
-            VarPair (VarPair (f, _), i) = w
-            w' = VarPair (VarPair (f, gn), i)
+            VarPair (VarPair (f, _), _) = w
+            w' = VarPair (VarPair (f, gn), VarInt i)
             aa = unit $ Set.map (\ss -> let [(_,u)] = ssll ss in llss [(w,u),(w',u)]) (cart uu (sgl w))
-        wwttc w = trans (aao `add` aai) (sgl w') 
+        wwttc w i = trans (aao `add` aai) (sgl w') 
           where
-            VarPair (VarPair (f, _), i) = w
-            w' = VarPair (VarPair (f, gn), i)
+            VarPair (VarPair (f, _), _) = w
+            w' = VarPair (VarPair (f, gn), VarInt i)
             vc = Set.findMin $ fder ggc
             aao = unit $ Set.map ((\u -> llss [(vc,uo),(w,u),(w',un)]) . snd . head . ssll) (cart uu (sgl w))
             aai = unit $ Set.map ((\u -> llss [(vc,ui),(w,u),(w',u)]) . snd . head . ssll) (cart uu (sgl w))
@@ -5122,18 +5122,18 @@ systemsDecompFudsNullableLeafPracticable uu df
         ttc = trans aac (sgl wc)
     nullable :: Fud -> Fud -> Fud
     nullable ff ggc
-      | ggc == fudEmpty = ff `funion` qqff (Set.map wwttr (fder ff))
-      | otherwise = ggc `funion` ff `funion` qqff (Set.map wwttc (fder ff))
-      where
-        wwttr w = trans aa (sgl w') 
+      | ggc == fudEmpty = ff `funion` qqff (llqq [wwttr w i | (w,i) <- zip (qqll (fder ff)) [1..]])
+      | otherwise = ggc `funion` ff `funion` qqff (llqq [wwttc w i | (w,i) <- zip (qqll (fder ff)) [1..]])
+     where
+        wwttr w i = trans aa (sgl w') 
           where
-            VarPair (VarPair (f, _), i) = w
-            w' = VarPair (VarPair (f, VarStr "n"), i)
+            VarPair (VarPair (f, _), _) = w
+            w' = VarPair (VarPair (f, VarStr "n"), VarInt i)
             aa = unit $ Set.map (\ss -> let [(_,u)] = ssll ss in llss [(w,u),(w',u)]) (cart uu (sgl w))
-        wwttc w = trans (aao `add` aai) (sgl w') 
+        wwttc w i = trans (aao `add` aai) (sgl w') 
           where
-            VarPair (VarPair (f, _), i) = w
-            w' = VarPair (VarPair (f, VarStr "n"), i)
+            VarPair (VarPair (f, _), _) = w
+            w' = VarPair (VarPair (f, VarStr "n"), VarInt i)
             vc = Set.findMin $ fder ggc
             aao = unit $ Set.map ((\u -> llss [(vc,uo),(w,u),(w',un)]) . snd . head . ssll) (cart uu (sgl w))
             aai = unit $ Set.map ((\u -> llss [(vc,ui),(w,u),(w',u)]) . snd . head . ssll) (cart uu (sgl w))
