@@ -115,7 +115,8 @@ module AlignmentPracticable (
   parametersSystemsDecomperLevelMaxRollByMExcludedSelfHighest,
   parametersSystemsDecomperMaximumRollExcludedSelfHighestGoodness,
   systemsDecompFudsNullablePracticable,
-  systemsDecompFudsNullableLeafPracticable
+  systemsDecompFudsNullableLeafPracticable,
+  parametersBuilderConditionalVars
 )
 where
 import Data.List
@@ -5164,3 +5165,35 @@ systemsDecompFudsNullableLeafPracticable uu df
     qqll = Set.toList
     llqq :: forall a. (Ord a) => [a] -> Set.Set a
     llqq = Set.fromList
+
+parametersBuilderConditionalVars :: 
+  Integer -> Integer -> Set.Set Variable -> Histogram -> 
+  Maybe (Map.Map (Set.Set Variable) Double)
+parametersBuilderConditionalVars kmax omax ll aa
+  | kmax < 0 || omax < 0 = Nothing
+  | otherwise = Just $ bot omax $ buildc rr rr
+  where
+    vvk = vars aa `minus` ll
+    rr = bot omax $ llmm [(sgl w, ent (aa `red` (ll `add` w)) - ent (aa `red` (sgl w))) | w <- qqll vvk]
+    buildc qq nn = if mm /= Map.empty then buildc mm (nn `Map.union` mm) else nn
+      where
+        pp = llqq [jj | (kk,e) <- mmll qq, e > 0, w <- qqll (vvk `minus` kk), let jj = kk `add` w]
+        mm = bot omax $ llmm [(jj, ent (aa `red` (ll `union` jj)) - ent (aa `red` jj)) |
+          jj <- qqll pp, card jj <= kmax]
+    ent = histogramsEntropy 
+    red aa vv = setVarsHistogramsReduce vv aa
+    vars = histogramsVars
+    bot amax mm = llmm $ flip $ take (fromInteger amax) $ sort $ flip $ mmll mm
+    flip = map (\(a,b) -> (b,a))
+    llmm = Map.fromList
+    mmll = Map.toList
+    add xx x = x `Set.insert` xx
+    union = Set.union
+    minus = Set.difference
+    card = toInteger . Set.size
+    qqll :: forall a. Set.Set a -> [a]
+    qqll = Set.toList
+    llqq :: forall a. (Ord a) => [a] -> Set.Set a
+    llqq = Set.fromList
+    sgl = Set.singleton
+
