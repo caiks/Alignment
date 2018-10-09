@@ -5167,11 +5167,11 @@ systemsDecompFudsNullableLeafPracticable uu df
     llqq = Set.fromList
 
 parametersBuilderConditionalVars :: 
-  Integer -> Integer -> Set.Set Variable -> Histogram -> 
+  Integer -> Integer -> Integer -> Set.Set Variable -> Histogram -> 
   Maybe (Map.Map (Set.Set Variable) Double)
-parametersBuilderConditionalVars kmax omax ll aa
-  | kmax < 0 || omax < 0 = Nothing
-  | otherwise = Just $ bot omax $ buildc rr rr
+parametersBuilderConditionalVars kmax omax qmax ll aa
+  | kmax < 0 || omax < 0 || qmax < 0 = Nothing
+  | otherwise = Just $ bot qmax $ buildc rr rr
   where
     vvk = vars aa `minus` ll
     rr = bot omax $ llmm [(sgl w, ent (aa `red` (ll `add` w)) - ent (aa `red` (sgl w))) | w <- qqll vvk]
