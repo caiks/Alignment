@@ -116,7 +116,8 @@ module AlignmentPracticable (
   parametersSystemsDecomperMaximumRollExcludedSelfHighestGoodness,
   systemsDecompFudsNullablePracticable,
   systemsDecompFudsNullableLeafPracticable,
-  parametersBuilderConditionalVars
+  parametersBuilderConditionalVars,
+  systemsDecompFudsNullableTreePracticable
 )
 where
 import Data.List
@@ -5161,6 +5162,86 @@ systemsDecompFudsNullableLeafPracticable uu df
     sgl = Set.singleton
     minus :: Ord a => Set.Set a -> Set.Set a -> Set.Set a
     minus = Set.difference
+    qqll :: forall a. Set.Set a -> [a]
+    qqll = Set.toList
+    llqq :: forall a. (Ord a) => [a] -> Set.Set a
+    llqq = Set.fromList
+
+systemsDecompFudsNullableTreePracticable :: System -> DecompFud -> Integer -> 
+  Maybe (Fud, Tree (Set.Set Variable, Set.Set Variable))
+systemsDecompFudsNullableTreePracticable uu df g 
+  | and [okvar v | v <- qqll (dfvars df `minus` dfund df)] = Just $ (hh, yy')
+  | otherwise = Nothing
+  where
+    yy = trff fudEmpty fudEmpty (dfzz df)
+    yy' = funcsTreesMap (\(ww,gg) -> (ww, fder gg)) yy
+    hh = Set.foldl (\ff (_,gg) -> ff `funion` gg) fudEmpty (treesElements yy)
+    trff :: Fud -> Fud -> Tree (State,Fud) -> Tree (Set.Set Variable,Fud)
+    trff ffp ffc zz = Tree $ llmm [((fder ggc, ffn), trff ff ggc xx) | 
+      (((rrp,ff),xx),i) <- zip (qqll (rel zz)) [1..], let ggc = cont ffp rrp ffc i, let ffn = nullable ff ggc]
+    okvar (VarPair (VarPair (_, v), _)) = v /= gs && v /= gc && v /= gn
+    okvar _ = False
+    cont :: Fud -> State -> Fud -> Integer -> Fud
+    cont ffp rrp ffc i
+      | ffp == fudEmpty = fudEmpty
+      | ffc == fudEmpty = ffp `funion` ttff tts
+      | otherwise = ffc `funion` ffp `funion` ttff tts `funion` ttff ttc
+      where
+        ((VarPair (VarPair (f,_),_)),_) = head $ ssll rrp
+        ws = VarPair (VarPair (f, gs), VarInt i)
+        aaso = unit $ sgl $ llss [(ws,uo)]
+        aasi = unit $ sgl $ llss [(ws,ui)]
+        tts = trans ((unit (cart uu (fder ffp) `minus` sgl rrp) `mul` aaso) `add` (unit (sgl rrp) `mul` aasi)) (sgl ws)
+        vc = Set.findMin $ fder ffc
+        wc = VarPair (VarPair (f, gc), VarInt i)
+        aac = unit $ llqq [llss [(ws,uo),(vc,uo),(wc,uo)],llss [(ws,uo),(vc,ui),(wc,uo)],
+                           llss [(ws,ui),(vc,uo),(wc,uo)],llss [(ws,ui),(vc,ui),(wc,ui)]]
+        ttc = trans aac (sgl wc)
+    nullable :: Fud -> Fud -> Fud
+    nullable ff ggc
+      | ggc == fudEmpty = ff `funion` qqff (llqq [wwttr w i | (w,i) <- zip (qqll (fder ff)) [1..]])
+      | otherwise = ggc `funion` ff `funion` qqff (llqq [wwttc w i | (w,i) <- zip (qqll (fder ff)) [1..]])
+     where
+        wwttr w i = trans aa (sgl w') 
+          where
+            VarPair (VarPair (f, _), _) = w
+            w' = VarPair (VarPair (f, gn), VarInt i)
+            aa = unit $ Set.map (\ss -> let [(_,u)] = ssll ss in llss [(w,u),(w',u)]) (cart uu (sgl w))
+        wwttc w i = trans (aao `add` aai) (sgl w') 
+          where
+            VarPair (VarPair (f, _), _) = w
+            w' = VarPair (VarPair (f, gn), VarInt i)
+            vc = Set.findMin $ fder ggc
+            aao = unit $ Set.map ((\u -> llss [(vc,uo),(w,u),(w',un)]) . snd . head . ssll) (cart uu (sgl w))
+            aai = unit $ Set.map ((\u -> llss [(vc,ui),(w,u),(w',u)]) . snd . head . ssll) (cart uu (sgl w))
+    uo = ValStr "out"
+    ui = ValStr "in"
+    un = ValStr "null"
+    gs = VarStr (show g ++ ";s")
+    gc = VarStr (show g ++ ";c")
+    gn = VarStr (show g ++ ";n")
+    dfzz = decompFudsTreePairStateFud
+    dfvars = fudsVars . decompFudsFud
+    dfund = decompFudsUnderlying
+    funion ff gg = qqff (ffqq ff `Set.union` ffqq gg)
+    qqff = fromJust . setTransformsFud
+    ffqq = fudsSetTransform
+    fder = fudsDerived
+    ttff = fromJust . setTransformsFud . Set.singleton
+    trans = histogramsSetVarsTransform_u
+    unit qq = fromJust $ setStatesHistogramUnit qq
+    add xx yy = fromJust $ pairHistogramsAdd xx yy
+    mul = pairHistogramsMultiply
+    cart uu vv = fromJust $ systemsVarsCartesian uu vv
+    llss = listsState
+    ssll = statesList
+    rel = treesRelation
+    sgl :: a -> Set.Set a
+    sgl = Set.singleton
+    minus :: Ord a => Set.Set a -> Set.Set a -> Set.Set a
+    minus = Set.difference
+    llmm :: forall k a. (Ord k) => [(k, a)] -> Map.Map k a
+    llmm = Map.fromList
     qqll :: forall a. Set.Set a -> [a]
     qqll = Set.toList
     llqq :: forall a. (Ord a) => [a] -> Set.Set a
