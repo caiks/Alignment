@@ -142,7 +142,7 @@ module Alignment (
   pairHistogramsMultiply,
   histogramsReciprocal,
   pairHistogramsDivide,
-  varsHistogramsReduce, setVarsHistogramsReduce,
+  varsHistogramsReduce, setVarsHistogramsReduce, setVarsHistogramsReduce_1,
   histogramsReduceScalar,
   histogramIntegralsMult,
   histogramsHistogramIntegralsPermutorial,
@@ -1366,6 +1366,13 @@ pairHistogramsDivide aa bb = mul aa (recip bb)
 
 setVarsHistogramsReduce :: Set.Set Variable -> Histogram -> Histogram 
 setVarsHistogramsReduce vv aa = cc
+  where
+    cc = his $ [(varsStatesFilter vv ss, q) | (ss,q) <- lis aa]
+    his = listsHistogram_u  
+    lis = histogramsList
+
+setVarsHistogramsReduce_1 :: Set.Set Variable -> Histogram -> Histogram 
+setVarsHistogramsReduce_1 vv aa = cc
   where
     Just cc = his $ [(varsStatesFilter vv ss, q) | (ss,q) <- lis aa]
     his = listsHistogram  
