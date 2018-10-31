@@ -197,6 +197,7 @@ module Alignment (
   fudsDefinitions,
   fudsVarsDepends,
   fudsVarsDepends_1,
+  fudsSetVarsDepends,
   fudsIsCircular,
   fudsMono,
   fudsTreeVar,
@@ -1961,6 +1962,8 @@ fudsVarsDepends ff ww = deps ww Set.empty
 
 fudsVarsDepends_1 :: Fud -> Set.Set Variable -> Fud
 fudsVarsDepends_1 ff ww = fudsVarsVarsDepends ff ww Set.empty
+
+fudsSetVarsDepends = fudsVarsDepends
   
 fudsVarsVarsDepends :: Fud -> Set.Set Variable -> Set.Set Variable -> Fud
 fudsVarsVarsDepends ff ww xx = 
