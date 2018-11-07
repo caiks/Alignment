@@ -123,6 +123,7 @@ module Alignment (
   histogramsIsCartesianSub,
   histogramRegularUnitContingentlyPermutedDiagonal,
   setVarsHistogramsSlices,
+  setVarsHistogramsSliceModal, setVarsHistogramsSliceModal_1,
   systemsSetVarsHistogramCartesian,
   systemsHistogramsCartesian,
   systemsHistogramsIsCartesian,
@@ -1209,6 +1210,29 @@ setVarsHistogramsSlices kk aa =
     red aa vv = setVarsHistogramsReduce vv aa
     states =  Set.toList . histogramsSetState
     mul = pairHistogramsMultiply
+
+setVarsHistogramsSliceModal :: Set.Set Variable -> Histogram -> Rational
+setVarsHistogramsSliceModal kk aa = 
+    sum [aamax cc | (rr,cc) <- Map.toList (slices kk aa)]
+  where
+    slices = setVarsHistogramsSlices
+    size = histogramsSize
+    aall = histogramsList
+    aamax aa = if size aa > 0 then (last $ sort $ snd $ unzip $ aall aa) else 0
+
+setVarsHistogramsSliceModal_1 :: Set.Set Variable -> Histogram -> Rational
+setVarsHistogramsSliceModal_1 kk aa = 
+    sum [aamax cc | rr <- states (aa `red` kk), let cc = aa `mul` single rr `red` vk]
+  where
+    vk = vars aa `Set.difference` kk
+    single ss = fromJust $ histogramSingleton ss 1
+    red aa vv = setVarsHistogramsReduce vv aa
+    states =  Set.toList . histogramsSetState
+    size = histogramsSize
+    mul = pairHistogramsMultiply
+    aall = histogramsList
+    aamax aa = if size aa > 0 then (last $ sort $ snd $ unzip $ aall aa) else 0
+    vars = histogramsVars
 
 histogramsIsCartesianSub :: Histogram -> Bool
 histogramsIsCartesianSub aa = 
