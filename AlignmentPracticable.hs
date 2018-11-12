@@ -5068,9 +5068,9 @@ systemsDecompFudsNullablePracticable uu df g
     uo = ValStr "out"
     ui = ValStr "in"
     un = ValStr "null"
-    gs = VarStr (show g ++ ";s")
-    gc = VarStr (show g ++ ";c")
-    gn = VarStr (show g ++ ";n")
+    gs = VarStr $ "s" ++ (if g > 1 then show g else "")
+    gc = VarStr $ "c" ++ (if g > 1 then show g else "")
+    gn = VarStr $ "n" ++ (if g > 1 then show g else "")
     dfzz = decompFudsTreePairStateFud
     dfvars = fudsVars . decompFudsFud
     dfund = decompFudsUnderlying
@@ -5217,9 +5217,9 @@ systemsDecompFudsNullableTreePracticable uu df g
     uo = ValStr "out"
     ui = ValStr "in"
     un = ValStr "null"
-    gs = VarStr (show g ++ ";s")
-    gc = VarStr (show g ++ ";c")
-    gn = VarStr (show g ++ ";n")
+    gs = VarStr $ "s" ++ (if g > 1 then show g else "")
+    gc = VarStr $ "c" ++ (if g > 1 then show g else "")
+    gn = VarStr $ "n" ++ (if g > 1 then show g else "")
     dfzz = decompFudsTreePairStateFud
     dfvars = fudsVars . decompFudsFud
     dfund = decompFudsUnderlying
