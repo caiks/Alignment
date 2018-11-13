@@ -116,8 +116,9 @@ module AlignmentPracticable (
   parametersSystemsDecomperMaximumRollExcludedSelfHighestGoodness,
   systemsDecompFudsNullablePracticable,
   systemsDecompFudsNullableLeafPracticable,
-  parametersBuilderConditionalVars,
-  systemsDecompFudsNullableTreePracticable
+  systemsDecompFudsNullableTreePracticable,
+  variablesVariableFud,
+  parametersBuilderConditionalVars
 )
 where
 import Data.List
@@ -5246,6 +5247,10 @@ systemsDecompFudsNullableTreePracticable uu df g
     qqll = Set.toList
     llqq :: forall a. (Ord a) => [a] -> Set.Set a
     llqq = Set.fromList
+
+variablesVariableFud :: Variable -> Variable
+variablesVariableFud (VarPair (VarPair (f,_),_)) = f
+variablesVariableFud _ = VarInt 0
 
 parametersBuilderConditionalVars :: 
   Integer -> Integer -> Integer -> Set.Set Variable -> Histogram -> 
