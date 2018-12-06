@@ -1,7 +1,7 @@
 module AlignmentDev
 where
 
-import Data.List
+import Data.List hiding (union)
 import qualified Data.Set as Set
 import qualified Data.Map as Map
 import GHC.Real
@@ -15,12 +15,41 @@ import AlignmentRandom
 import AlignmentPracticable
 import AlignmentPracticableIO
 
-pv x = represent x
-sunion = pairStatesUnionLeft
+qqll :: Set.Set a -> [a]
+qqll = Set.toList
 
+llqq :: (Ord a) => [a] -> Set.Set a
+llqq = Set.fromList
+
+sgl :: a -> Set.Set a
+sgl = Set.singleton
+
+card :: Set.Set a -> Int
+card = Set.size
+
+union :: Ord a => Set.Set a -> Set.Set a -> Set.Set a
+union = Set.union
+
+minus :: Ord a => Set.Set a -> Set.Set a -> Set.Set a
+minus = Set.difference
+
+inter :: Ord a => Set.Set a -> Set.Set a -> Set.Set a
+inter = Set.intersection
+
+least :: Set.Set a -> a
+least = Set.findMin
+
+most :: Set.Set a -> a
+most = Set.findMax
+
+rp x = represent x
+rj (Just x) = represent x
+rj Nothing = "Nothing"
+rpln ll = mapM_ (print . rp) ll
+
+sunion = pairStatesUnionLeft
 ssll = statesList
 llss = listsState
-
 ssplit = setVarsSetStatesSplit 
 
 cart uu vv = fromJust $ systemsVarsCartesian uu vv
@@ -32,7 +61,6 @@ vol uu vv = fromJust $ systemsVarsVolume uu vv
 uull = systemsList
 umap uu ll = Map.fromList [(v,(v',Map.fromList (zip (Set.toList ww) (map ValInt [1..])))) | ((v,ww),v') <- zip [(v,ww) | (v,ww) <- uull uu, variablesIsPartition v] ll]
 
-ph x = represent x
 aat aa ss = fromJust $ histogramsStatesCount aa ss
 aall = histogramsList
 llaa ll = fromJust $ listsHistogram ll
@@ -52,7 +80,7 @@ vars = histogramsVars
 cdvars ll = Set.fromList $ map VarInt ll
 states = histogramsStates
 dim = histogramsDimension
-card = histogramsCardinality
+acard = histogramsCardinality
 recip = histogramsReciprocal
 red aa vv = setVarsHistogramsReduce vv aa
 ared aa vv = setVarsHistogramsReduce vv aa
@@ -130,7 +158,6 @@ ppqqppp = partitionsComponentsPartitionPointed
 ppptt = partitionPointedsTransformVarPartition 
 ppptts = partitionPointedsStringsCartesianTransformVarString
 
-pt x = represent x
 und = transformsUnderlying
 der = transformsDerived
 tvars = transformsVars
@@ -158,7 +185,6 @@ qqff = fromJust . setTransformsFud
 llff = qqff . Set.fromList
 ttff = fromJust . setTransformsFud . Set.singleton
 
-pf ff = represent ff
 ffqq = fudsSetTransform
 fvars = fudsVars
 fder = fudsDerived
@@ -198,10 +224,3 @@ algn = histogramsAlignment
 algnden aa = let v = fromIntegral (vol (sys aa) (vars aa)); n = fromIntegral (dim aa) in algn aa  / (v ** (1/n))
 
 
-pd x = represent x
-
-rp x = represent x
-rj (Just x) = represent x
-rj Nothing = "Nothing"
-
-rpln ll = mapM_ (print . rp) ll
