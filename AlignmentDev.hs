@@ -75,6 +75,7 @@ apply = setVarsSetVarsSetHistogramsHistogramsApply
 leq = pairHistogramsLeq
 size = histogramsSize
 resize z aa = fromJust $ histogramsResize z aa
+vsize uu xx aa = resize (fromIntegral (vol uu xx)) aa
 norm aa = resize 1 aa
 vars = histogramsVars
 cdvars ll = Set.fromList $ map VarInt ll
