@@ -1,4 +1,4 @@
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE RankNTypes, TypeSynonymInstances, FlexibleInstances #-}
 
 module Alignment (
   Value(..),
@@ -22,6 +22,8 @@ module Alignment (
   RollValue,
   Model,
   derived,
+  ToValue,
+  toValue,
   variablesIsPartition,
   systemEmpty,
   systemFromList, listsSystem, listsSystem_u,
@@ -414,6 +416,21 @@ newtype RollValue = RollValue (Set.Set Variable, Variable, Value, Value)
 
 class Model a where
   derived :: a -> Set.Set Variable
+
+class ToValue a where
+  toValue :: a -> Value
+
+instance ToValue String where
+  toValue = ValStr
+
+instance ToValue Int where
+  toValue = ValInt . fromIntegral
+
+instance ToValue Integer where
+  toValue = ValInt
+
+instance ToValue Double where
+  toValue = ValDouble
 
 instance Represent Value where
   represent (ValStr s) = s
