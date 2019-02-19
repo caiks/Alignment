@@ -118,7 +118,8 @@ module AlignmentPracticable (
   systemsDecompFudsNullableLeafPracticable,
   systemsDecompFudsNullableTreePracticable,
   variablesVariableFud,
-  parametersBuilderConditionalVars
+  parametersBuilderConditionalVars,
+  parametersSystemsDecomperConditional
 )
 where
 import Data.List
@@ -5282,4 +5283,76 @@ parametersBuilderConditionalVars kmax omax qmax ll aa
     llqq :: forall a. (Ord a) => [a] -> Set.Set a
     llqq = Set.fromList
     sgl = Set.singleton
+
+parametersSystemsDecomperConditional :: 
+  Integer -> Integer -> System -> Set.Set Variable -> Histogram -> 
+  Maybe (System, DecompFud)
+parametersSystemsDecomperConditional kmax omax uu ll aa
+  | kmax < 0 || omax < 0 = Nothing
+  | otherwise = Just $ decomp uu emptyTree 1
+  where
+    vv = vars aa
+    decomp uu zz f
+      | zz == emptyTree && nnr == [] = (uu, decompFudEmpty)
+      | zz == emptyTree = decomp uur zzr (f+1)
+      | mm == [] = (uu, zzdf (zztrim zz)) 
+      | otherwise = decomp uuc zzc (f+1)
+      where
+        nnr = lenter kmax omax 1 ll aa
+        [(kkr,_)] = nnr
+        ffr = if nnr /= [] then vvff uu kkr f else fudEmpty
+        uur = uu `uunion` fsys ffr
+        zzr = tsgl (stateEmpty,ffr)
+        mm = [(e,nn,ss,bb) | (nn,yy) <- qqll (treesPlaces zz), 
+                 let rrc = llsthis nn, let hhc = llfhis nn, let (_,ff) = last nn, ff /= fudEmpty,
+                 ss <- qqll (cart uu (fder ff) `minus` dom (treesRoots yy)),
+                 let xx = hhc `union` rrc `add` unit (sgl ss),
+                 let bb = apply vv vv xx aa,
+                 let e = fromRational (size bb) * ent (bb `red` ll), e > rounding]
+        (_,nn,ss,bb) = last $ sort mm
+        nnc = lenter kmax omax 1 ll bb
+        [(kkc,_)] = nnc
+        ffc = if nnc /= [] then vvff uu kkc f else fudEmpty
+        uuc = uu `uunion` fsys ffc
+        zzc = pathsTree $ treesPaths zz `add` (nn ++ [(ss,ffc)])
+    lenter kmax omax qmax ll aa = mmll $ fromJust $ parametersBuilderConditionalVars kmax omax qmax ll aa
+    vvff uu vv f = ff
+      where
+        v = VarPair (VarPair (VarInt f, VarInt 1), VarInt 1)
+        qq = llqq [ss `sunion` llss [(v, ValInt i)] | (ss,i) <- zip (qqll (cart uu vv)) [1..]]
+        ff = ttff (trans (unit qq) (sgl v))
+    zztrim = pathsTree . Set.map lltrim . treesPaths
+    lltrim ll = let (_,ff) = last ll in if ff == fudEmpty then init ll else ll
+    llsthis = Set.fromList . map (unit . sgl) . fst . unzip
+    llfhis = bigcup . Set.fromList . map fhis . snd . unzip
+    zzdf zz = fromJust $ treePairStateFudsDecompFud zz
+    fsys = fudsSystemImplied
+    fder = fudsDerived
+    fhis = fudsSetHistogram
+    ttff = fromJust . setTransformsFud . sgl
+    trans xx ww = fromJust $ histogramsSetVarsTransform xx ww
+    apply = setVarsSetVarsSetHistogramsHistogramsApply
+    ent = histogramsEntropy 
+    unit = fromJust . setStatesHistogramUnit
+    red aa vv = setVarsHistogramsReduce vv aa
+    vars = histogramsVars
+    size = histogramsSize
+    sunion = pairStatesUnionLeft
+    llss = listsState
+    cart = systemsSetVarsSetStateCartesian_u
+    uunion = pairSystemsUnion
+    tsgl r = Tree $ Map.singleton r emptyTree
+    bigcup = setSetsUnion
+    dom = relationsDomain
+    mmll = Map.toList
+    minus = Set.difference
+    llqq = Set.fromList
+    add qq x = Set.insert x qq
+    sgl :: a -> Set.Set a
+    sgl = Set.singleton
+    qqll = Set.toList
+    union = Set.union
+    rounding :: Double 
+    rounding = 1e-14
+
 
