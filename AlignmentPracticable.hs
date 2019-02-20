@@ -5295,6 +5295,75 @@ parametersSystemsDecomperConditional kmax omax uu ll aa
     decomp uu zz f
       | zz == emptyTree && nnr == [] = (uu, decompFudEmpty)
       | zz == emptyTree = decomp uur zzr (f+1)
+      | mm == [] || nnc == [] = (uu, zzdf zz) 
+      | otherwise = decomp uuc zzc (f+1)
+      where
+        nnr = lenter kmax omax ll aa
+        [(kkr,_)] = nnr
+        ffr = vvff uu kkr f
+        uur = uu `uunion` fsys ffr
+        zzr = tsgl (stateEmpty,ffr)
+        mm = [(e,nn,ss,bb) | (nn,yy) <- qqll (treesPlaces zz), 
+                 let rrc = llsthis nn, let hhc = llfhis nn, let (_,ff) = last nn, 
+                 ss <- qqll (cart uu (fder ff) `minus` dom (treesRoots yy)),
+                 let xx = hhc `union` rrc `add` unit (sgl ss),
+                 let bb = apply vv vv xx aa,
+                 let e = fromRational (size bb) * ent (bb `red` ll), e > rounding]
+        (_,nn,ss,bb) = last $ sort mm
+        nnc = lenter kmax omax ll bb
+        [(kkc,_)] = nnc
+        ffc = vvff uu kkc f
+        uuc = uu `uunion` fsys ffc
+        zzc = pathsTree $ treesPaths zz `add` (nn ++ [(ss,ffc)])
+    lenter kmax omax ll aa = mmll $ fromJust $ parametersBuilderConditionalVars kmax omax 1 ll aa
+    vvff uu vv f = ff
+      where
+        v = VarPair (VarPair (VarInt f, VarInt 1), VarInt 1)
+        qq = llqq [ss `sunion` llss [(v, ValInt i)] | (ss,i) <- zip (qqll (cart uu vv)) [1..]]
+        ff = ttff (trans (unit qq) (sgl v))
+    llsthis = Set.fromList . map (unit . sgl) . fst . unzip
+    llfhis = bigcup . Set.fromList . map fhis . snd . unzip
+    zzdf zz = fromJust $ treePairStateFudsDecompFud zz
+    fsys = fudsSystemImplied
+    fder = fudsDerived
+    fhis = fudsSetHistogram
+    ttff = fromJust . setTransformsFud . sgl
+    trans xx ww = fromJust $ histogramsSetVarsTransform xx ww
+    apply = setVarsSetVarsSetHistogramsHistogramsApply
+    ent = histogramsEntropy 
+    unit = fromJust . setStatesHistogramUnit
+    red aa vv = setVarsHistogramsReduce vv aa
+    vars = histogramsVars
+    size = histogramsSize
+    sunion = pairStatesUnionLeft
+    llss = listsState
+    cart = systemsSetVarsSetStateCartesian_u
+    uunion = pairSystemsUnion
+    tsgl r = Tree $ Map.singleton r emptyTree
+    bigcup = setSetsUnion
+    dom = relationsDomain
+    mmll = Map.toList
+    minus = Set.difference
+    llqq = Set.fromList
+    add qq x = Set.insert x qq
+    sgl :: a -> Set.Set a
+    sgl = Set.singleton
+    qqll = Set.toList
+    union = Set.union
+    rounding :: Double 
+    rounding = 1e-14
+
+parametersSystemsDecomperConditional_1 :: 
+  Integer -> Integer -> System -> Set.Set Variable -> Histogram -> 
+  Maybe (System, DecompFud)
+parametersSystemsDecomperConditional_1 kmax omax uu ll aa
+  | kmax < 0 || omax < 0 = Nothing
+  | otherwise = Just $ decomp uu emptyTree 1
+  where
+    vv = vars aa
+    decomp uu zz f
+      | zz == emptyTree && nnr == [] = (uu, decompFudEmpty)
+      | zz == emptyTree = decomp uur zzr (f+1)
       | mm == [] = (uu, zzdf (zztrim zz)) 
       | otherwise = decomp uuc zzc (f+1)
       where
@@ -5354,5 +5423,6 @@ parametersSystemsDecomperConditional kmax omax uu ll aa
     union = Set.union
     rounding :: Double 
     rounding = 1e-14
+
 
 
