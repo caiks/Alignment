@@ -10,7 +10,7 @@ Some of the sections of the Overview of the paper have been illustrated with a [
 
 For programmers who are interested in implementing *inducers*, some of the sections of the paper have been expanded in a [Haskell commentary](https://greenlake.co.uk/pages/inducer_haskell) with links to documentation of the code in the repository. The code documentation is gathered together in [Haskell code](https://greenlake.co.uk/pages/inducer_haskell_implementation). 
 
-## Installation
+## Download
 
 The `Alignment` module requires the [Haskell platform](https://www.haskell.org/downloads#platform) to be installed.
 
