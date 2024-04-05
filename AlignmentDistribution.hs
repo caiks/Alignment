@@ -68,7 +68,7 @@ systemsDistributionsMean uu ff
   | otherwise = Nothing
   where
     isDist = systemsDistributionsIs
-    sumf ff = Map.fold (+) 0 ff
+    sumf ff = Map.foldr (+) 0 ff
     scalar = fromJust . histogramScalar
     add xx yy = fromJust $ pairHistogramsAdd xx yy
     div = pairHistogramsDivide
@@ -86,7 +86,7 @@ systemsDistributionsVariance uu ff
     index aa ss = fromJust $ histogramsStatesCount aa ss
     vars = distributionsSetVar
     states uu vv = Set.toList $ fromJust $ systemsSetVarsSetStateCartesian uu vv
-    sumf ff = Map.fold (+) 0 ff
+    sumf ff = Map.foldr (+) 0 ff
 
 pairDistributionsChiSq :: Distribution -> Distribution -> Maybe Rational
 pairDistributionsChiSq ff gg 
@@ -299,7 +299,7 @@ systemsDrawIndependentBinomialsProbabilityMass_1 uu ee z
     red aa vv = setVarsHistogramsReduce vv aa
     size = histogramsSize
     llhh ll = fromJust $ listsHistory ll
-    norm qq = let t = toRational (Map.fold (+) 0 qq) in Map.map (\f -> toRational f / t) qq 
+    norm qq = let t = toRational (Map.foldr (+) 0 qq) in Map.map (\f -> toRational f / t) qq 
     isInt = histogramsIsIntegral
     empty = historyEmpty
     qqhh = llhh . Set.toList

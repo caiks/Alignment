@@ -833,7 +833,7 @@ histogramsStatesCount :: Histogram -> State -> Maybe Rational
 histogramsStatesCount (Histogram mm) v = Map.lookup v mm
 
 histogramsSize :: Histogram -> Rational
-histogramsSize (Histogram mm) = Map.fold (+) 0 mm
+histogramsSize (Histogram mm) = Map.foldr (+) 0 mm
 
 histogramsResize :: Rational -> Histogram -> Maybe Histogram
 histogramsResize z aa 
@@ -887,7 +887,7 @@ pairHistogramsIsEquivalent = pairHistogramsEquivalent
 
 pairHistogramsLeq :: Histogram -> Histogram -> Bool
 pairHistogramsLeq aa bb = 
-    states aat `Set.isSubsetOf` states bb && Map.fold (&&) True (Map.intersectionWith (<=) mm nn)
+    states aat `Set.isSubsetOf` states bb && Map.foldr (&&) True (Map.intersectionWith (<=) mm nn)
   where
     trim = histogramsTrim
     states = histogramsSetState

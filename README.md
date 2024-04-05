@@ -14,12 +14,12 @@ For programmers who are interested in implementing *inducers*, some of the secti
 
 The `Alignment` module requires the [Haskell platform](https://www.haskell.org/downloads#platform) to be installed.
 
-For example in Ubuntu,
+Once done, two modules should be installed, `old-locale` and `random`. For example, using `stack`,
 ```
-sudo apt-get update
-sudo apt-get install haskell-platform
+stack install old-locale
+stack install random
 ```
-Then download the zip file or use git to get the repository -
+Then download the zip file or use git to get the repository. For example, in Ubuntu -
 ```
 cd
 git clone https://github.com/caiks/Alignment.git
@@ -27,10 +27,10 @@ git clone https://github.com/caiks/Alignment.git
 
 ## Usage
 
-The Alignment modules are not optimised for performance and are mainly intended to allow experimentation in the Haskell interpreter. Load `AlignmentDev` to import the modules and define various useful abbreviated functions,
+The Alignment modules are not optimised for performance and are mainly intended to allow experimentation in the Haskell interpreter. Use `stack ghci` or `stack repl` for a run-eval-print loop (REPL) environment. Load `AlignmentDev` to import the modules and define various useful abbreviated functions,
 ```
 cd Alignment
-ghci
+stack ghci
 ```
 ```hs
 :set +m

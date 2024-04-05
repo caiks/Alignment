@@ -118,7 +118,7 @@ emptyTree = Tree (Map.empty)
 
 treesNodes :: (Ord a, Ord (Tree a)) => Tree a -> Set.Set (a, Tree a)
 treesNodes tt = 
-    rel tt `Set.union` (Map.fold Set.union Set.empty (Map.map (\rr -> nodes rr) mm))
+    rel tt `Set.union` (Map.foldr Set.union Set.empty (Map.map (\rr -> nodes rr) mm))
   where
     (Tree mm) = tt
     rel = treesRelation
