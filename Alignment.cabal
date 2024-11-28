@@ -1,0 +1,47 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.36.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           Alignment
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/caiks/Alignment#readme>
+homepage:       https://github.com/caiks/Alignment#readme
+bug-reports:    https://github.com/caiks/Alignment/issues
+author:         Cliff McCartney
+maintainer:     caiks@greenlake.co.uk
+copyright:      Cliff McCartney
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/caiks/Alignment
+
+library
+  exposed-modules:
+      Alignment
+      AlignmentApprox
+      AlignmentDev
+      AlignmentDistribution
+      AlignmentPracticable
+      AlignmentPracticableIO
+      AlignmentRandom
+      AlignmentSubstrate
+      AlignmentUtil
+  other-modules:
+      Paths_Alignment
+  hs-source-dirs:
+      ./
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , old-locale
+    , random
+    , time
+  default-language: Haskell2010

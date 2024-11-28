@@ -12,13 +12,8 @@ For programmers who are interested in implementing *inducers*, some of the secti
 
 ## Download
 
-The `Alignment` module requires the [Haskell platform](https://www.haskell.org/downloads#platform) to be installed.
+The `Alignment` module requires the [Haskell platform](https://www.haskell.org/downloads#platform) to be installed. The project is managed using [stack](https://docs.haskellstack.org/en/stable/).
 
-Once done, two modules should be installed, `old-locale` and `random`. For example, using `stack`,
-```
-stack install old-locale
-stack install random
-```
 Then download the zip file or use git to get the repository. For example, in Ubuntu -
 ```
 cd

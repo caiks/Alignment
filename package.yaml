@@ -1,0 +1,42 @@
+name:                Alignment
+version:             0.1.0.0
+github:              "caiks/Alignment"
+license:             "MIT"
+author:              "Cliff McCartney"
+maintainer:          "caiks@greenlake.co.uk"
+copyright:           "Cliff McCartney"
+
+extra-source-files:
+- README.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/caiks/Alignment#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- containers
+- old-locale
+- random
+- time
+
+ghc-options:
+- -Wall
+- -Wcompat
+- -Widentities
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wmissing-export-lists
+- -Wmissing-home-modules
+- -Wpartial-fields
+- -Wredundant-constraints
+
+library:
+  source-dirs: .
+
+
