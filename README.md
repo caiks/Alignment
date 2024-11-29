@@ -14,7 +14,7 @@ For programmers who are interested in implementing *inducers*, some of the secti
 
 The `Alignment` module requires the [Haskell platform](https://www.haskell.org/downloads#platform) to be installed. The project is managed using [stack](https://docs.haskellstack.org/en/stable/).
 
-Then download the zip file or use git to get the repository. For example, in Ubuntu -
+Download the zip file or use git to get the repository. For example, in Ubuntu -
 ```
 cd
 git clone https://github.com/caiks/Alignment.git
