@@ -26,6 +26,7 @@ library
   exposed-modules:
       Alignment
       AlignmentApprox
+      AlignmentDev
       AlignmentDistribution
       AlignmentPracticable
       AlignmentPracticableIO
